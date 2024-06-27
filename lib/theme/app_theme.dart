@@ -15,6 +15,7 @@ final appThemeData = {
       secondary: Color.fromARGB(255, 31, 31, 31),
       onSurface: Color.fromARGB(255, 31, 31, 31),
     ),
+    fontFamily: "Alef",
   ),
   AppTheme.Dark: ThemeData(
     brightness: Brightness.dark,
@@ -25,5 +26,6 @@ final appThemeData = {
       secondary: Colors.red,
       onSurface: Colors.white,
     ),
+    fontFamily: "Alef",
   ),
 };
