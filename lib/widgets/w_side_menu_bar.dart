@@ -10,7 +10,7 @@ class SideMenuBar extends ConsumerWidget {
       width: 216,
       child: Container(
         color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.05),
-        child: const Placeholder(),
+        // child: const Placeholder(),
       ),
     );
   }

@@ -44,6 +44,7 @@ dependencies:
   provider: ^6.1.2
   flutter_riverpod: ^2.5.1
   flutter_inner_shadow: ^0.0.1
+  buttons_flutter: ^0.0.2+1
 
 
 dev_dependencies:
@@ -69,10 +70,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - assets/fonts
-    - assets/images
-    - assets/images/icons
+  # assets:
+    # - assets/fonts
+    # - assets/images
+    # - assets/images/icons
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -85,16 +86,18 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+
   fonts:
-    - family: PrimaryFont
+    - family: testfont
       fonts:
         - asset: assets/fonts/primary_font.ttf
     - family: Alef
       fonts:
         - asset: assets/fonts/Alef-Regular.ttf
-          weight: 400
         - asset: assets/fonts/Alef-Bold.ttf
-          weight: 700
+    - family: GowunDodum
+      fonts:
+        - asset: assets/fonts/GowunDodum.ttf
 
   #   - family: Trajan Pro
   #     fonts:
