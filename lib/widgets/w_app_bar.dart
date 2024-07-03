@@ -17,7 +17,6 @@ class MainAppBar extends ConsumerWidget {
           const Expanded(
             flex: 5,
             child: RoundWidget(
-              radius: 10,
               child: Text('Hello, World!'),
             ),
           ),
@@ -25,7 +24,6 @@ class MainAppBar extends ConsumerWidget {
           Expanded(
               flex: 1,
               child: RoundButton(
-                borderRadius: 10,
                 onPressed: () => {},
                 child: Text("Add Contents +", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16)),
               )),
@@ -33,7 +31,6 @@ class MainAppBar extends ConsumerWidget {
           const SizedBox(
             width: 40,
             child: RoundWidget(
-              radius: 10,
               child: Text('A'),
             ),
           ),
@@ -41,7 +38,6 @@ class MainAppBar extends ConsumerWidget {
           const SizedBox(
             width: 40,
             child: RoundWidget(
-              radius: 10,
               child: Text('B'),
             ),
           ),
