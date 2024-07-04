@@ -1,34 +1,28 @@
 import 'package:flutter/material.dart';
 
-class RoundButton extends StatelessWidget {
+class Button extends StatelessWidget {
   final Color? color;
   final VoidCallback? onPressed;
   final Widget? child;
   final double? borderRadius;
   final Border? border;
 
-  const RoundButton({
-    super.key,
-    this.color,
-    this.border,
-    this.child,
-    this.borderRadius,
-    this.onPressed,
-  });
+  const Button({super.key, this.color, this.border, this.child, this.borderRadius, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Material(
       type: MaterialType.transparency,
       child: Ink(
         decoration: BoxDecoration(
-          color: color ?? Theme.of(context).colorScheme.onPrimary,
-          borderRadius: BorderRadius.circular(borderRadius ?? 12),
-          border: border ?? Border.all(width: 1),
+          color: color ?? theme.primaryColor,
+          borderRadius: BorderRadius.circular(borderRadius ?? 128),
+          border: border ?? const Border(),
         ),
         child: InkWell(
-          onTap: onPressed ?? () => print("object"),
-          borderRadius: BorderRadius.circular(borderRadius ?? 12),
+          borderRadius: BorderRadius.circular(borderRadius ?? 128),
+          onTap: onPressed,
           child: Container(
             alignment: Alignment.center,
             child: child,

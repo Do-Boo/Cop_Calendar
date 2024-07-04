@@ -45,6 +45,7 @@ dependencies:
   flutter_riverpod: ^2.5.1
   flutter_inner_shadow: ^0.0.1
   buttons_flutter: ^0.0.2+1
+  get: ^4.6.6
 
 
 dev_dependencies:

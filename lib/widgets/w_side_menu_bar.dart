@@ -31,7 +31,7 @@ class SideMenuBar extends ConsumerWidget {
               ),
               SizedBox(
                 height: 56,
-                child: RoundButton(
+                child: Button(
                   color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
                   border: 1 == 1 ? Border.all(width: 1) : const Border(),
                   child: const Row(
@@ -48,7 +48,7 @@ class SideMenuBar extends ConsumerWidget {
               const SizedBox(height: 8),
               SizedBox(
                 height: 56,
-                child: RoundButton(
+                child: Button(
                   color: Theme.of(context).colorScheme.onPrimary.withOpacity(0),
                   border: const Border(),
                   child: const Row(
@@ -65,7 +65,7 @@ class SideMenuBar extends ConsumerWidget {
               const SizedBox(height: 8),
               SizedBox(
                 height: 56,
-                child: RoundButton(
+                child: Button(
                   color: Theme.of(context).colorScheme.onPrimary.withOpacity(0),
                   border: const Border(),
                   child: const Row(
@@ -82,7 +82,7 @@ class SideMenuBar extends ConsumerWidget {
               const SizedBox(height: 8),
               SizedBox(
                 height: 56,
-                child: RoundButton(
+                child: Button(
                   color: Theme.of(context).colorScheme.onPrimary.withOpacity(0),
                   border: const Border(),
                   child: const Row(

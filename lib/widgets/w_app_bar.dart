@@ -23,7 +23,7 @@ class MainAppBar extends ConsumerWidget {
           const SizedBox(width: 16),
           Expanded(
               flex: 1,
-              child: RoundButton(
+              child: Button(
                 onPressed: () => {},
                 child: Text("Add Contents +", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16)),
               )),
