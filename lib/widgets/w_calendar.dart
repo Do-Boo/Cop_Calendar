@@ -19,72 +19,89 @@ class Calendar extends StatelessWidget {
       aspectRatio: 1 / 1,
       child: Column(
         children: [
-          Expanded(
-            flex: 1,
-            child: GridView.count(
-              crossAxisCount: 7,
-              physics: const NeverScrollableScrollPhysics(),
-              children: weekdays.map((text) => Center(child: Text(text, style: TextStyle(color: theme.hintColor, fontWeight: FontWeight.bold)))).toList(),
-            ),
-          ),
-          Expanded(
-            flex: 7,
-            child: PageView.builder(
-              controller: pageController,
-              onPageChanged: (value) {
-                day.value = DateTime(SelectedDayController.to.selectedDay.year, value + 1, 1);
-              },
-              itemBuilder: (context, index) {
-                return ValueListenableBuilder(
-                  valueListenable: day,
-                  builder: (context, value, child) {
-                    return Obx(() {
-                      return GridView.count(
-                        crossAxisCount: 7,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: List.generate(42, (index) {
-                          final calculatedDay = value.add(Duration(days: index - value.weekday % 7));
-                          return Center(
-                            child: RoundWidget(
-                              padding: const EdgeInsets.all(2),
-                              margin: const EdgeInsets.all(6),
-                              color: _dayColor(value, index, theme, SelectedDayController.to.selectedDay) == theme.primaryColor ? theme.hintColor : null,
-                              borderRadius: BorderRadius.circular(128),
-                              child: Button(
-                                onPressed: () => SelectedDayController.to.selectedDay = calculatedDay, // 선택된 날짜를 업데이트합니다.
-                                color: _dayColor(value, index, theme, SelectedDayController.to.selectedDay) == theme.primaryColor ? theme.hintColor : null,
-                                border: Border.all(color: theme.primaryColor, width: 1),
-                                child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Expanded(child: SizedBox()),
-                                      Text(
-                                        "${calculatedDay.day}",
-                                        style: TextStyle(
-                                          color: _dayColor(value, index, theme, SelectedDayController.to.selectedDay),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const Expanded(child: Row()),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        }),
-                      );
-                    });
-                  },
-                );
-              },
-            ),
-          ),
+          Expanded(flex: 1, child: _buildWeekdaysView(theme)),
+          Expanded(flex: 6, child: _buildMonthView(pageController, day, theme)),
         ],
       ),
     );
+  }
+
+  Widget _buildWeekdaysView(ThemeData theme) {
+    return GridView.count(
+      crossAxisCount: 7,
+      physics: const NeverScrollableScrollPhysics(),
+      children: weekdays.map((text) => Center(child: Text(text, style: TextStyle(color: _getDayColor(text, theme), fontWeight: FontWeight.bold)))).toList(),
+    );
+  }
+
+  Widget _buildMonthView(PageController pageController, ValueNotifier<DateTime> day, ThemeData theme) {
+    return PageView.builder(
+      controller: pageController,
+      onPageChanged: (value) {
+        day.value = DateTime(SelectedDayController.to.selectedDay.year, value + 1, 1);
+      },
+      itemBuilder: (context, index) {
+        return ValueListenableBuilder(
+          valueListenable: day,
+          builder: (context, value, child) {
+            return Obx(() {
+              return GridView.count(
+                crossAxisCount: 7,
+                physics: const NeverScrollableScrollPhysics(),
+                children: List.generate(42, (index) {
+                  final calculatedDay = value.add(Duration(days: index - value.weekday % 7));
+                  return Center(
+                    child: RoundWidget(
+                      padding: const EdgeInsets.all(2),
+                      margin: const EdgeInsets.all(6),
+                      color: _dayColor(value, index, theme, SelectedDayController.to.selectedDay) == theme.primaryColor ? theme.hintColor : null,
+                      borderRadius: BorderRadius.circular(128),
+                      child: Obx(() {
+                        return Button(
+                          onPressed: () {
+                            SelectedDayController.to.selectedDay = calculatedDay;
+                            day.value = DateTime(SelectedDayController.to.selectedDay.year, SelectedDayController.to.selectedDay.month, 1);
+                          },
+                          color: _dayColor(value, index, theme, SelectedDayController.to.selectedDay) == theme.primaryColor ? theme.hintColor : null,
+                          border: Border.all(color: theme.primaryColor, width: 1),
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Expanded(child: SizedBox()),
+                                Text(
+                                  "${calculatedDay.day}",
+                                  style: TextStyle(
+                                    color: _dayColor(value, index, theme, SelectedDayController.to.selectedDay),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const Expanded(child: Row()),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  );
+                }),
+              );
+            });
+          },
+        );
+      },
+    );
+  }
+
+  Color _getDayColor(String day, ThemeData theme) {
+    if (day == "Sun") {
+      return Colors.red;
+    } else if (day == "Sat") {
+      return Colors.blue;
+    } else {
+      return theme.hintColor;
+    }
   }
 
   Color _dayColor(DateTime day, int index, ThemeData theme, DateTime selectedDay) {

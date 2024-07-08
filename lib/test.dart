@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,49 +12,82 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter DraggableScrollableSheet Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('ko', 'KR'), // Korean
+      ],
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('날짜 선택 예제'),
+        ),
+        body: const Center(
+          child: MyDatePicker(),
+        ),
       ),
-      home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class MyDatePicker extends StatefulWidget {
+  const MyDatePicker({super.key});
+
+  @override
+  _MyDatePickerState createState() => _MyDatePickerState();
+}
+
+class _MyDatePickerState extends State<MyDatePicker> {
+  DateTime _date = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter DraggableScrollableSheet Demo'),
-      ),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            color: Colors.blue[100],
-            child: const Center(child: Text('Pull up from the bottom')),
-          ),
-          DraggableScrollableSheet(
-            initialChildSize: 0.6, // 초기 높이를 설정합니다. 1.0은 전체 화면을 의미합니다.
-            minChildSize: 0.6, // 최소 높이를 설정합니다.
-            maxChildSize: 1, // 최대 높이를 설정합니다.
-            builder: (BuildContext context, ScrollController scrollController) {
-              return Container(
-                color: Colors.blue[300],
-                child: ListView.builder(
-                  controller: scrollController,
-                  itemCount: 25,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(title: Text('Item ${index + 1}'));
-                  },
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          '선택된 날짜: ${_date.year}-${_date.month}-${_date.day}',
+          style: const TextStyle(fontSize: 16),
+        ),
+        const SizedBox(height: 20),
+        CupertinoButton(
+          color: Colors.blue,
+          child: const Text('날짜 선택'),
+          onPressed: () {
+            showCupertinoModalPopup(
+              context: context,
+              builder: (_) => Container(
+                height: 250,
+                color: const Color.fromARGB(255, 255, 255, 255),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 150,
+                      child: CupertinoDatePicker(
+                        mode: CupertinoDatePickerMode.date,
+                        initialDateTime: DateTime.now(),
+                        onDateTimeChanged: (val) {
+                          setState(() {
+                            _date = val;
+                          });
+                        },
+                      ),
+                    ),
+
+                    // Close the modal
+                    CupertinoButton(
+                      child: const Text('확인'),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  ],
                 ),
-              );
-            },
-          ),
-        ],
-      ),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

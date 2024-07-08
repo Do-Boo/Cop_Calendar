@@ -20,3 +20,16 @@ class SelectedDayController extends GetxController {
   DateTime get selectedDay => _selectedDay.value;
   set selectedDay(DateTime day) => _selectedDay.value = day;
 }
+
+class ScrollControllerX extends GetxController {
+  static ScrollControllerX get to => Get.find();
+  final RxBool _isAtMax = false.obs;
+
+  bool get isAtMax => _isAtMax.value;
+
+  void checkIfAtMax(ScrollController scrollController) {
+    if (scrollController.position.atEdge) {
+      _isAtMax.value = scrollController.position.pixels == scrollController.position.maxScrollExtent;
+    }
+  }
+}

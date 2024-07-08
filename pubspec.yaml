@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -46,11 +48,13 @@ dependencies:
   flutter_inner_shadow: ^0.0.1
   buttons_flutter: ^0.0.2+1
   get: ^4.6.6
+  intl: ^0.19.0
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+    
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -99,6 +103,9 @@ flutter:
     - family: GowunDodum
       fonts:
         - asset: assets/fonts/GowunDodum.ttf
+    - family: Pacifico
+      fonts:
+        - asset: assets/fonts/Pacifico-Regular.ttf
 
   #   - family: Trajan Pro
   #     fonts:

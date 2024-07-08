@@ -10,7 +10,7 @@ final appThemeData = {
     brightness: Brightness.light,
     primaryColor: Colors.white,
     scaffoldBackgroundColor: Colors.white,
-    hintColor: const Color.fromARGB(255, 13, 16, 18),
+    hintColor: Colors.black,
     colorScheme: const ColorScheme.light(
       primary: Colors.white,
     ),
@@ -18,11 +18,11 @@ final appThemeData = {
   ),
   AppTheme.Dark: ThemeData(
     brightness: Brightness.dark,
-    primaryColor: const Color.fromARGB(255, 13, 16, 18),
-    scaffoldBackgroundColor: const Color.fromARGB(255, 13, 16, 18),
+    primaryColor: Colors.black,
+    scaffoldBackgroundColor: Colors.black,
     hintColor: Colors.white,
     colorScheme: const ColorScheme.dark(
-      primary: Color.fromARGB(255, 13, 16, 18),
+      primary: Colors.black,
     ),
     fontFamily: "GowunDodum",
   ),
