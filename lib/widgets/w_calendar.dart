@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:events_app/g_gets.dart';
 import 'package:events_app/widgets/w_button.dart';
 import 'package:events_app/widgets/w_round_widget.dart';
@@ -50,6 +52,7 @@ class Calendar extends StatelessWidget {
   }
 
   Widget _buildMonthView(PageController pageController, ValueNotifier<DateTime> day, ThemeData theme) {
+    final rng = Random();
     return PageView.builder(
       controller: pageController,
       onPageChanged: (value) {
@@ -94,7 +97,13 @@ class Calendar extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const Expanded(child: Row()),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children:
+                                        List<Widget>.generate(2, (_) => Text(rng.nextInt(2) == 0 ? "*" : "", style: const TextStyle(fontSize: 9))).toList(),
+                                  ),
+                                ),
                               ],
                             ),
                           ),

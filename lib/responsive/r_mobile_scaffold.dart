@@ -60,7 +60,7 @@ class _MobileScaffoldState extends State<MobileScaffold> {
                           controller: scrollController,
                           itemCount: 25,
                           itemBuilder: (BuildContext context, int index) {
-                            return ListTile(title: Text('Item ${index + 1}'));
+                            return ListTile(title: Text("Item ${index + 1}"));
                           },
                         ),
                       ),

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
+  // var rng = Random();
+  // List<int> randomNumbers = List<int>.generate(2, (_) => rng.nextInt(1));
+  // print(randomNumbers.toString());
   runApp(const MyApp());
 }
 

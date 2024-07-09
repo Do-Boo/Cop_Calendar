@@ -14,6 +14,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final statusBarHeight = MediaQuery.of(context).viewPadding.top;
     return SafeArea(
       top: true,
       child: Container(
@@ -46,8 +47,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           return Container(
                             alignment: Alignment.topCenter,
                             child: Container(
-                              padding: const EdgeInsets.only(top: 56),
-                              height: 280,
+                              padding: EdgeInsets.only(top: statusBarHeight),
+                              height: 220 + statusBarHeight,
                               color: theme.primaryColor,
                               child: Column(
                                 children: [

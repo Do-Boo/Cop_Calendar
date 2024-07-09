@@ -8,6 +8,7 @@ class DatePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     final date = SelectedDayController.to.selectedDay;
     final yearController = FixedExtentScrollController(initialItem: date.year - 2024);
     final monthController = FixedExtentScrollController(initialItem: date.month - 1);
@@ -23,7 +24,7 @@ class DatePicker extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            margin: const EdgeInsets.only(top: 40, bottom: 72),
+            margin: const EdgeInsets.only(top: 40, bottom: 68),
             decoration: BoxDecoration(
               color: theme.hintColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(16),

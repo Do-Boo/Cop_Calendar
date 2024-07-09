@@ -1,5 +1,5 @@
-import 'package:events_app/widgets/%08w_date_picker.dart';
-import 'package:flutter/material.dart';
+import "package:events_app/widgets/%08w_date_picker.dart";
+import "package:flutter/material.dart";
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Date Wheel Selector Example'),
+          title: const Text("Date Wheel Selector Example"),
         ),
         body: const Center(
           child: DatePicker(),
@@ -44,9 +44,9 @@ class _DatePickerWheelState extends State<DatePickerWheel> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        buildDatePicker('Year', years, yearController),
-        buildDatePicker('Month', months, monthController),
-        buildDatePicker('Day', days, dayController),
+        buildDatePicker("Year", years, yearController),
+        buildDatePicker("Month", months, monthController),
+        buildDatePicker("Day", days, dayController),
       ],
     );
   }
@@ -62,7 +62,7 @@ class _DatePickerWheelState extends State<DatePickerWheel> {
               controller: controller,
               itemExtent: 30.0,
               onSelectedItemChanged: (index) {
-                print('$label: ${values[index]}');
+                print("$label: ${values[index]}");
               },
               children: values.map((value) => Center(child: Text(value.toString()))).toList(),
             ),
