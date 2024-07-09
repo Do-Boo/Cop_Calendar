@@ -2,6 +2,7 @@ import 'package:events_app/g_gets.dart';
 import 'package:events_app/widgets/w_button.dart';
 import 'package:events_app/widgets/w_round_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -13,14 +14,28 @@ class Calendar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final day = ValueNotifier<DateTime>(DateTime(SelectedDayController.to.selectedDay.year, SelectedDayController.to.selectedDay.month, 1));
-    final pageController = PageController(initialPage: SelectedDayController.to.selectedDay.month - 1);
+    final pageController = PageController(
+      initialPage: (SelectedDayController.to.selectedDay.year - 2024) * 12 + SelectedDayController.to.selectedDay.month - 1,
+    );
 
     return AspectRatio(
       aspectRatio: 1 / 1,
       child: Column(
         children: [
           Expanded(flex: 1, child: _buildWeekdaysView(theme)),
-          Expanded(flex: 6, child: _buildMonthView(pageController, day, theme)),
+          Expanded(
+            flex: 6,
+            child: Obx(() {
+              DateTime date = SelectedDayController.to.selectedDay;
+              if (pageController.hasClients) {
+                if ((date.year - 2000) * 12 + date.month != pageController.page! + 1) {
+                  pageController.jumpToPage((date.year - 2024) * 12 + date.month - 1);
+                }
+              }
+              return _buildMonthView(pageController, day, theme);
+            }),
+          ),
+          // Expanded(flex: 6, child: _buildMonthView(pageController, day, theme)),
         ],
       ),
     );
@@ -39,6 +54,7 @@ class Calendar extends StatelessWidget {
       controller: pageController,
       onPageChanged: (value) {
         day.value = DateTime(SelectedDayController.to.selectedDay.year, value + 1, 1);
+        HapticFeedback.lightImpact();
       },
       itemBuilder: (context, index) {
         return ValueListenableBuilder(
@@ -61,6 +77,7 @@ class Calendar extends StatelessWidget {
                           onPressed: () {
                             SelectedDayController.to.selectedDay = calculatedDay;
                             day.value = DateTime(SelectedDayController.to.selectedDay.year, SelectedDayController.to.selectedDay.month, 1);
+                            HapticFeedback.lightImpact();
                           },
                           color: _dayColor(value, index, theme, SelectedDayController.to.selectedDay) == theme.primaryColor ? theme.hintColor : null,
                           border: Border.all(color: theme.primaryColor, width: 1),

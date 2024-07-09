@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:events_app/g_gets.dart";
+import "package:flutter/services.dart";
 
 class DatePicker extends StatelessWidget {
   const DatePicker({super.key});
@@ -19,14 +20,25 @@ class DatePicker extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
       color: Colors.transparent,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Stack(
         children: [
-          buildDatePicker("Year", years, yearController, theme),
-          Container(height: 80, width: 1, color: theme.hintColor.withOpacity(0.3)),
-          buildDatePicker("Month", months, monthController, theme),
-          Container(height: 80, width: 1, color: theme.hintColor.withOpacity(0.3)),
-          buildDatePicker("Day", days, dayController, theme),
+          Container(
+            margin: const EdgeInsets.only(top: 40, bottom: 72),
+            decoration: BoxDecoration(
+              color: theme.hintColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              buildDatePicker("Year", years, yearController, theme),
+              Container(height: 80, width: 1, color: theme.hintColor.withOpacity(0.3)),
+              buildDatePicker("Month", months, monthController, theme),
+              Container(height: 80, width: 1, color: theme.hintColor.withOpacity(0.3)),
+              buildDatePicker("Day", days, dayController, theme),
+            ],
+          ),
         ],
       ),
     );
@@ -38,7 +50,7 @@ class DatePicker extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
-            height: 100,
+            height: 120,
             child: ListWheelScrollView(
               controller: controller,
               useMagnifier: true,
@@ -51,6 +63,12 @@ class DatePicker extends StatelessWidget {
                   label == "Month" ? values[index] : date.month,
                   label == "Day" ? values[index] : date.day,
                 );
+                controller.animateToItem(
+                  index,
+                  duration: const Duration(microseconds: 200),
+                  curve: Curves.easeInOut,
+                );
+                HapticFeedback.lightImpact();
               },
               children: values
                   .map(
@@ -58,9 +76,9 @@ class DatePicker extends StatelessWidget {
                       child: Text(
                         value.toString(),
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 21,
                           fontFamily: "GowunDodum",
-                          color: theme.hintColor,
+                          color: theme.hintColor.withOpacity(0.8),
                           decoration: TextDecoration.none,
                         ),
                       ),

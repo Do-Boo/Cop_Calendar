@@ -3,6 +3,7 @@ import 'package:events_app/widgets/%08w_date_picker.dart';
 import 'package:events_app/widgets/w_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,6 +37,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ],
                     ),
                     onPressed: () => {
+                      HapticFeedback.lightImpact(),
                       showGeneralDialog(
                         context: context,
                         barrierDismissible: true,
@@ -45,7 +47,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             alignment: Alignment.topCenter,
                             child: Container(
                               padding: const EdgeInsets.only(top: 56),
-                              height: 260,
+                              height: 280,
                               color: theme.primaryColor,
                               child: Column(
                                 children: [
@@ -61,13 +63,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                               children: [
                                                 Text(
                                                   DateFormat("yyyy.MM.").format(SelectedDayController.to.selectedDay),
+                                                  // DateFormat("yyyy.MM.dd.(EE)", "ko_KR").format(SelectedDayController.to.selectedDay),
                                                   textAlign: TextAlign.left,
                                                   style: TextStyle(color: theme.hintColor, fontSize: 28, fontWeight: FontWeight.bold),
                                                 ),
                                                 const Icon(Icons.keyboard_arrow_up),
                                               ],
                                             ),
-                                            onPressed: () => Navigator.of(context).pop(),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                              HapticFeedback.lightImpact();
+                                            },
                                           );
                                         }),
                                         const Expanded(child: SizedBox()),
@@ -101,7 +107,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   width: 40,
                   height: 40,
                   child: Button(
-                    onPressed: () => print(ScrollControllerX.to.isAtMax),
+                    onPressed: () {
+                      print(ScrollControllerX.to.isAtMax);
+                      HapticFeedback.lightImpact();
+                    },
                     child: const Icon(CupertinoIcons.search),
                   ),
                 ),
@@ -115,6 +124,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ThemeController.to.toggleTheme();
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       await prefs.setBool("isDarkTheme", ThemeController.to.themeMode == ThemeMode.dark);
+                      HapticFeedback.lightImpact();
                     },
                   ),
                 ),
