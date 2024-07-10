@@ -17,10 +17,10 @@ $conn->set_charset("utf8");
 
 $now = new DateTime();
 
-$room1 = $_GET["room1"] . "%";
-$room2 = "%" . $_GET["room2"] . "%";
-$title = "%" . str_replace(" ", "", $_GET["title"]) . "%";
-$status = "%" . $_GET["status"] . "%";
+$room1 = ($_GET["room1"] ?? "") . "%";
+$room2 = "%" . ($_GET["room2"] ?? "") . "%";
+$title = "%" . str_replace(" ", "", ($_GET["title"]) ?? "") . "%";
+$status = "%" . ($_GET["status"] ?? "") . "%";
 $time = $_GET["time"] ?? "3";
 $sdate = $_GET["sdate"] ?? $now->format("Y-m-d");
 $ldate = $_GET["ldate"] ?? $now->modify("+1 day")->format("Y-m-d");
@@ -31,6 +31,7 @@ $stmt = $conn->prepare("SELECT *, Date_format(사용날짜, '%Y-%m-%d') as 날�
   . "left join tel on report.id = tel.id "
   . "where 회의실 LIKE ? "
   . "and 회의실 LIKE ? "
+  . "and not (회의실 LIKE '%제1동(지상3층)%' )"
   . "and replace(회의명, ' ', '') LIKE ? "
   . "and 신청여부 LIKE ? "
   . "and ((Date_format(사용날짜, '%H') > 12) + 1) <> ? "

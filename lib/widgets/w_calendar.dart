@@ -37,7 +37,6 @@ class Calendar extends StatelessWidget {
               return _buildMonthView(pageController, day, theme);
             }),
           ),
-          // Expanded(flex: 6, child: _buildMonthView(pageController, day, theme)),
         ],
       ),
     );
@@ -99,10 +98,15 @@ class Calendar extends StatelessWidget {
                                 ),
                                 Expanded(
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children:
-                                        List<Widget>.generate(2, (_) => Text(rng.nextInt(2) == 0 ? "*" : "", style: const TextStyle(fontSize: 9))).toList(),
-                                  ),
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: List<Widget>.generate(2, (_) {
+                                        return Obx(() {
+                                          Color color = _dayColor(value, index, theme, SelectedDayController.to.selectedDay);
+                                          return rng.nextInt(2) == 0
+                                              ? Icon(Icons.circle, size: 8, color: color)
+                                              : Icon(Icons.circle_outlined, size: 8, color: color);
+                                        });
+                                      }).toList()),
                                 ),
                               ],
                             ),

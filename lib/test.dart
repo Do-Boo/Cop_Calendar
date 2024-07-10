@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 void main() {
-  // var rng = Random();
-  // List<int> randomNumbers = List<int>.generate(2, (_) => rng.nextInt(1));
-  // print(randomNumbers.toString());
   runApp(const MyApp());
 }
 
@@ -15,82 +12,44 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('ko', 'KR'), // Korean
-      ],
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('날짜 선택 예제'),
+          title: const Text('JSON Example'),
         ),
-        body: const Center(
-          child: MyDatePicker(),
+        body: FutureBuilder(
+          future: readJsonData(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text("Error: ${snapshot.error}");
+            } else if (snapshot.hasData) {
+              var items = snapshot.data as List<dynamic>;
+              return ListView.builder(
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  // print(items.length);
+                  return Card(
+                    child: ListTile(
+                      title: Text(items[index]["회의실"]),
+                      // subtitle: Text(items[index]['description']),
+                    ),
+                  );
+                },
+              );
+            } else {
+              return const CircularProgressIndicator();
+            }
+          },
         ),
       ),
     );
   }
-}
 
-class MyDatePicker extends StatefulWidget {
-  const MyDatePicker({super.key});
-
-  @override
-  _MyDatePickerState createState() => _MyDatePickerState();
-}
-
-class _MyDatePickerState extends State<MyDatePicker> {
-  DateTime _date = DateTime.now();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          '선택된 날짜: ${_date.year}-${_date.month}-${_date.day}',
-          style: const TextStyle(fontSize: 16),
-        ),
-        const SizedBox(height: 20),
-        CupertinoButton(
-          color: Colors.blue,
-          child: const Text('날짜 선택'),
-          onPressed: () {
-            showCupertinoModalPopup(
-              context: context,
-              builder: (_) => Container(
-                height: 250,
-                color: const Color.fromARGB(255, 255, 255, 255),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 150,
-                      child: CupertinoDatePicker(
-                        mode: CupertinoDatePickerMode.date,
-                        initialDateTime: DateTime.now(),
-                        onDateTimeChanged: (val) {
-                          setState(() {
-                            _date = val;
-                          });
-                        },
-                      ),
-                    ),
-
-                    // Close the modal
-                    CupertinoButton(
-                      child: const Text('확인'),
-                      onPressed: () => Navigator.of(context).pop(),
-                    )
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-      ],
-    );
+  Future<List<dynamic>> readJsonData() async {
+    final response = await http.get(Uri.parse("http://doboo.tplinkdns.com/Web/API/jsonData.php"));
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
 }
