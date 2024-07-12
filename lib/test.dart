@@ -1,7 +1,6 @@
 import 'package:events_app/theme/app_theme.dart';
 import 'package:events_app/widgets/w_shimmer.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 
 void main() {
   runApp(const MyApp());
