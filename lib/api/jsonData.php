@@ -15,15 +15,15 @@ if ($conn->connect_error) {
 
 $conn->set_charset("utf8");
 
-$now = new DateTime();
+$now = isset($_POST["sdate"]) ? new DateTime($_POST["sdate"]) : new DateTime();
 
-$room1 = ($_GET["room1"] ?? "") . "%";
-$room2 = "%" . ($_GET["room2"] ?? "") . "%";
-$title = "%" . str_replace(" ", "", ($_GET["title"]) ?? "") . "%";
-$status = "%" . ($_GET["status"] ?? "") . "%";
-$time = $_GET["time"] ?? "3";
-$sdate = $_GET["sdate"] ?? $now->format("Y-m-d");
-$ldate = $_GET["ldate"] ?? $now->modify("+1 day")->format("Y-m-d");
+$room1 = ($_POST["room1"] ?? "") . "%";
+$room2 = "%" . ($_POST["room2"] ?? "") . "%";
+$title = "%" . str_replace(" ", "", ($_POST["title"]) ?? "") . "%";
+$status = "%" . ($_POST["status"] ?? "승인") . "%";
+$time = $_POST["time"] ?? "3";
+$sdate = $_POST["sdate"] ?? $now->format("Y-m-d");
+$ldate = $_POST["ldate"] ?? $now->modify("+1 day")->format("Y-m-d");
 
 $stmt = $conn->prepare("SELECT *, Date_format(사용날짜, '%Y-%m-%d') as 날짜,"
   . "(abs(TIMESTAMPDIFF(minute, 사용날짜, now())) < 60) and 신청여부 = '승인' as 시간 FROM report "
@@ -31,7 +31,7 @@ $stmt = $conn->prepare("SELECT *, Date_format(사용날짜, '%Y-%m-%d') as 날�
   . "left join tel on report.id = tel.id "
   . "where 회의실 LIKE ? "
   . "and 회의실 LIKE ? "
-  . "and not (회의실 LIKE '%제1동(지상3층)%' )"
+  . "and not (회의실 LIKE '%제1동(지상3층)%') "
   . "and replace(회의명, ' ', '') LIKE ? "
   . "and 신청여부 LIKE ? "
   . "and ((Date_format(사용날짜, '%H') > 12) + 1) <> ? "
@@ -43,6 +43,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result === false) {
+  echo "FALSE";
   die("Query failed: " . $conn->error);
 }
 

@@ -1,4 +1,3 @@
-import "package:events_app/widgets/%08w_date_picker.dart";
 import "package:flutter/material.dart";
 
 void main() {
@@ -16,59 +15,55 @@ class MyApp extends StatelessWidget {
           title: const Text("Date Wheel Selector Example"),
         ),
         body: const Center(
-          child: DatePicker(),
+          child: MyWidget(),
         ),
       ),
     );
   }
 }
 
-class DatePickerWheel extends StatefulWidget {
-  const DatePickerWheel({super.key});
+class MyWidget extends StatefulWidget {
+  const MyWidget({super.key});
 
   @override
-  _DatePickerWheelState createState() => _DatePickerWheelState();
+  _MyWidgetState createState() => _MyWidgetState();
 }
 
-class _DatePickerWheelState extends State<DatePickerWheel> {
-  FixedExtentScrollController yearController = FixedExtentScrollController();
-  FixedExtentScrollController monthController = FixedExtentScrollController();
-  FixedExtentScrollController dayController = FixedExtentScrollController();
+class _MyWidgetState extends State<MyWidget> {
+  final ScrollController _scrollController = ScrollController();
+  final double minChildSize = 0.5; // minChildSize를 정의합니다.
+  final double maxChildSize = 1.0; // maxChildSize를 정의합니다.
 
-  List<int> years = List<int>.generate(31, (i) => i + 1990);
-  List<int> months = List<int>.generate(12, (i) => i + 1);
-  List<int> days = List<int>.generate(31, (i) => i + 1);
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.atEdge) {
+        if (_scrollController.position.pixels == 0) {
+          print('Reached minChildSize');
+          // minChildSize에 도착했을 때 수행할 액션을 여기에 작성합니다.
+        } else {
+          print('Reached maxChildSize');
+          // maxChildSize에 도착했을 때 수행할 액션을 여기에 작성합니다.
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        buildDatePicker("Year", years, yearController),
-        buildDatePicker("Month", months, monthController),
-        buildDatePicker("Day", days, dayController),
-      ],
-    );
-  }
-
-  Widget buildDatePicker(String label, List<int> values, FixedExtentScrollController controller) {
-    return Expanded(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          SizedBox(
-            height: 100.0,
-            child: ListWheelScrollView(
-              controller: controller,
-              itemExtent: 30.0,
-              onSelectedItemChanged: (index) {
-                print("$label: ${values[index]}");
-              },
-              children: values.map((value) => Center(child: Text(value.toString()))).toList(),
-            ),
-          ),
-        ],
-      ),
+    return DraggableScrollableSheet(
+      minChildSize: minChildSize,
+      maxChildSize: maxChildSize,
+      builder: (BuildContext context, ScrollController scrollController) {
+        return ListView.builder(
+          controller: _scrollController, // ScrollController를 ListView에 연결합니다.
+          itemCount: 25,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(title: Text('Item ${index + 1}'));
+          },
+        );
+      },
     );
   }
 }

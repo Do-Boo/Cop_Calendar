@@ -8,12 +8,14 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+var theme;
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    theme = Theme.of(context);
     final statusBarHeight = MediaQuery.of(context).viewPadding.top;
     return SafeArea(
       top: true,
@@ -26,11 +28,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Obx(() {
+                  bool isAtMax = DScrollController.to.isAtMax;
                   return Button(
                     child: Row(
                       children: [
                         Text(
-                          DateFormat(ScrollControllerX.to.isAtMax ? "yyyy.MM.dd." : "yyyy.MM.").format(SelectedDayController.to.selectedDay),
+                          DateFormat(isAtMax ? "yyyy.MM.dd.(EE)" : "yyyy.MM.", "ko_KR").format(SelectedDayController.to.selectedDay),
+                          // DateFormat("yyyy.MM.").format(SelectedDayController.to.selectedDay),
                           textAlign: TextAlign.left,
                           style: TextStyle(color: theme.hintColor, fontSize: 28, fontWeight: FontWeight.bold),
                         ),
@@ -109,7 +113,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   height: 40,
                   child: Button(
                     onPressed: () {
-                      print(ScrollControllerX.to.isAtMax);
                       HapticFeedback.lightImpact();
                     },
                     child: const Icon(CupertinoIcons.search),

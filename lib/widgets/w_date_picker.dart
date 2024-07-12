@@ -2,13 +2,14 @@ import "package:flutter/material.dart";
 import "package:events_app/g_gets.dart";
 import "package:flutter/services.dart";
 
+var theme;
+
 class DatePicker extends StatelessWidget {
   const DatePicker({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
+    theme = Theme.of(context);
     final date = SelectedDayController.to.selectedDay;
     final yearController = FixedExtentScrollController(initialItem: date.year - 2024);
     final monthController = FixedExtentScrollController(initialItem: date.month - 1);
@@ -33,11 +34,11 @@ class DatePicker extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              buildDatePicker("Year", years, yearController, theme),
+              buildDatePicker("Year", years, yearController),
               Container(height: 80, width: 1, color: theme.hintColor.withOpacity(0.3)),
-              buildDatePicker("Month", months, monthController, theme),
+              buildDatePicker("Month", months, monthController),
               Container(height: 80, width: 1, color: theme.hintColor.withOpacity(0.3)),
-              buildDatePicker("Day", days, dayController, theme),
+              buildDatePicker("Day", days, dayController),
             ],
           ),
         ],
@@ -45,7 +46,7 @@ class DatePicker extends StatelessWidget {
     );
   }
 
-  Widget buildDatePicker(String label, List<int> values, FixedExtentScrollController controller, ThemeData theme) {
+  Widget buildDatePicker(String label, List<int> values, FixedExtentScrollController controller) {
     return Expanded(
       child: Column(
         mainAxisSize: MainAxisSize.min,

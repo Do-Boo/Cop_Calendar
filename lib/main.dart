@@ -28,6 +28,8 @@ class MyApp extends StatelessWidget {
       () => GetMaterialApp(
         initialBinding: BindingsBuilder(() {
           Get.put(SelectedDayController());
+          Get.put(SelectedRoomController());
+          Get.put(DScrollController());
         }),
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,

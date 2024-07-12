@@ -1,6 +1,7 @@
+import 'package:events_app/theme/app_theme.dart';
+import 'package:events_app/widgets/w_shimmer.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:shimmer/shimmer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,44 +13,54 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: appThemeData[AppTheme.Light],
+      darkTheme: appThemeData[AppTheme.Dark],
+      themeMode: ThemeMode.light,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('JSON Example'),
+          title: const Text('Shimmer Loading Example'),
         ),
-        body: FutureBuilder(
-          future: readJsonData(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Text("Error: ${snapshot.error}");
-            } else if (snapshot.hasData) {
-              var items = snapshot.data as List<dynamic>;
-              return ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  // print(items.length);
-                  return Card(
-                    child: ListTile(
-                      title: Text(items[index]["회의실"]),
-                      // subtitle: Text(items[index]['description']),
+        body: ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              title: SizedBox(
+                height: 36,
+                child: Row(
+                  children: [
+                    Container(
+                      height: double.infinity,
+                      width: 4,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).hintColor.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
-                  );
-                },
-              );
-            } else {
-              return const CircularProgressIndicator();
-            }
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(child: ShimmerWidget(borderRadius: BorderRadius.circular(4))),
+                          const SizedBox(height: 4),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Expanded(child: ShimmerWidget(borderRadius: BorderRadius.circular(4))),
+                                const Expanded(child: SizedBox()),
+                                const Expanded(child: SizedBox()),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
           },
         ),
       ),
     );
-  }
-
-  Future<List<dynamic>> readJsonData() async {
-    final response = await http.get(Uri.parse("http://doboo.tplinkdns.com/Web/API/jsonData.php"));
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception('Failed to load data');
-    }
   }
 }
