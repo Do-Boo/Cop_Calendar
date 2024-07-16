@@ -18,7 +18,7 @@ class MobileScaffold extends StatefulWidget {
 
 class _MobileScaffoldState extends State<MobileScaffold> {
   var theme;
-  final _controller = Get.put(DraggableScrollableController());
+  final _controller = DScrollController.to.scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -28,24 +28,21 @@ class _MobileScaffoldState extends State<MobileScaffold> {
     return Scaffold(
       appBar: const CustomAppBar(),
       drawer: const Drawer(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Stack(
         children: [
           Obx(() {
             if (!SelectedDayController.to.isAtToday) {
-              return Align(
-                alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                  height: 28,
-                  width: 60,
-                  child: FloatingActionButton(
-                    mini: true,
-                    backgroundColor: Theme.of(context).hintColor.withOpacity(0.3),
-                    onPressed: () {
-                      SelectedDayController.to.selectedDay = DateTime.now();
-                      HapticFeedback.lightImpact();
-                    },
-                    child: const Text("오늘"),
-                  ),
+              return SizedBox(
+                height: 28,
+                width: 78,
+                child: Button(
+                  color: Theme.of(context).hintColor.withOpacity(0.3),
+                  onPressed: () {
+                    SelectedDayController.to.selectedDay = DateTime.now();
+                    HapticFeedback.lightImpact();
+                  },
+                  child: const Text("오늘"),
                 ),
               );
             }
@@ -71,7 +68,8 @@ class _MobileScaffoldState extends State<MobileScaffold> {
                 builder: (BuildContext context, ScrollController scrollController) {
                   return NotificationListener<UserScrollNotification>(
                     onNotification: (notification) {
-                      DScrollController.to.isAtMax = _controller.size > 0.9;
+                      // DScrollController.to.isAtMax = _controller.size > 0.8;
+                      print(DScrollController.to.isAtMax);
                       return true;
                     },
                     child: Container(

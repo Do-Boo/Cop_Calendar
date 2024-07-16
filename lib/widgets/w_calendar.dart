@@ -104,8 +104,8 @@ class Calendar extends StatelessWidget {
                                         return Obx(() {
                                           Color color = _dayColor(value, index, SelectedDayController.to.selectedDay);
                                           return rng.nextInt(2) == 0
-                                              ? Icon(Icons.circle, size: 8, color: color)
-                                              : Icon(Icons.circle_outlined, size: 8, color: color);
+                                              ? Icon(Icons.circle, size: 6, color: color)
+                                              : Icon(Icons.circle_outlined, size: 6, color: color);
                                         });
                                       }).toList()),
                                 ),

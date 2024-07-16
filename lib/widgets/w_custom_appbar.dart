@@ -1,5 +1,5 @@
 import 'package:events_app/g_gets.dart';
-import 'package:events_app/widgets/%08w_date_picker.dart';
+import 'package:events_app/widgets/w_date_picker.dart';
 import 'package:events_app/widgets/w_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

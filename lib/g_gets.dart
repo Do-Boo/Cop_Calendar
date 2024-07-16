@@ -47,6 +47,6 @@ class DScrollController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    scrollController.addListener(() => isAtMax = isValue > 0.9);
+    scrollController.addListener(() => isAtMax = scrollController.size == 0.95);
   }
 }
