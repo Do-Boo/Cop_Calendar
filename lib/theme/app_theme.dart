@@ -15,6 +15,11 @@ final appThemeData = {
       primary: Colors.white,
     ),
     fontFamily: "GowunDodum",
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.red,
+      selectionColor: Colors.blue,
+      selectionHandleColor: Colors.green,
+    ),
   ),
   AppTheme.Dark: ThemeData(
     brightness: Brightness.dark,
@@ -25,5 +30,10 @@ final appThemeData = {
       primary: Colors.black,
     ),
     fontFamily: "GowunDodum",
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.red,
+      selectionColor: Colors.blue,
+      selectionHandleColor: Colors.green,
+    ),
   ),
 };

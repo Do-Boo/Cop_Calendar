@@ -1,3 +1,4 @@
+import "package:events_app/api/api_data.dart";
 import "package:events_app/g_gets.dart";
 import "package:events_app/responsive/r_desktop_scaffold.dart";
 import "package:events_app/responsive/r_layout.dart";
@@ -6,6 +7,7 @@ import "package:events_app/responsive/r_tablet_scaffold.dart";
 import "package:events_app/theme/app_theme.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
+import "package:kakao_flutter_sdk/kakao_flutter_sdk.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:flutter_localizations/flutter_localizations.dart";
 
@@ -13,6 +15,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isDarkTheme = prefs.getBool("isDarkTheme") ?? false;
+
+  KakaoSdk.init(
+    nativeAppKey: kakaoNativeAppKey,
+    javaScriptAppKey: kakaoJavaScriptAppKey,
+  );
+
   runApp(MyApp(isDarkTheme));
 }
 

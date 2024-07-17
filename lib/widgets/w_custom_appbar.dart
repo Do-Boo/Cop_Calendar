@@ -1,3 +1,4 @@
+import 'package:events_app/api/api_kakao_login.dart';
 import 'package:events_app/g_gets.dart';
 import 'package:events_app/widgets/w_date_picker.dart';
 import 'package:events_app/widgets/w_button.dart';
@@ -29,14 +30,36 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               children: [
                 Obx(() {
                   bool isAtMax = DScrollController.to.isAtMax;
+                  return Row(
+                    children: [
+                      SizedBox(
+                        height: 40,
+                        width: 40,
+                        child: Button(
+                          onPressed: () => {
+                            HapticFeedback.lightImpact(),
+                          },
+                          child: const Icon(Icons.density_medium),
+                        ),
+                      ),
+                      AnimatedContainer(
+                        width: isAtMax ? 54 : 0,
+                        duration: const Duration(seconds: 1),
+                        curve: Curves.fastOutSlowIn,
+                        child: const SizedBox(),
+                      ),
+                    ],
+                  );
+                }),
+                Obx(() {
+                  bool isAtMax = DScrollController.to.isAtMax;
                   return Button(
                     child: Row(
                       children: [
                         Text(
-                          DateFormat(isAtMax ? "yyyy.MM.dd.(EE)" : "yyyy.MM.", "ko_KR").format(SelectedDayController.to.selectedDay),
-                          // DateFormat("yyyy.MM.").format(SelectedDayController.to.selectedDay),
+                          DateFormat(isAtMax ? "MM.dd.(EE)" : "yyyy.MM.", "ko_KR").format(SelectedDayController.to.selectedDay),
                           textAlign: TextAlign.left,
-                          style: TextStyle(color: theme.hintColor, fontSize: 28, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: theme.hintColor, fontSize: 26, fontWeight: FontWeight.bold),
                         ),
                         const Icon(Icons.keyboard_arrow_down),
                       ],
@@ -66,11 +89,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                             color: Colors.transparent,
                                             child: Row(
                                               children: [
+                                                SizedBox(
+                                                  height: 40,
+                                                  width: 40,
+                                                  child: Button(
+                                                    onPressed: () => {
+                                                      HapticFeedback.lightImpact(),
+                                                    },
+                                                    child: const Icon(Icons.density_medium),
+                                                  ),
+                                                ),
                                                 Text(
                                                   DateFormat("yyyy.MM.").format(SelectedDayController.to.selectedDay),
-                                                  // DateFormat("yyyy.MM.dd.(EE)", "ko_KR").format(SelectedDayController.to.selectedDay),
                                                   textAlign: TextAlign.left,
-                                                  style: TextStyle(color: theme.hintColor, fontSize: 28, fontWeight: FontWeight.bold),
+                                                  style: TextStyle(color: theme.hintColor, fontSize: 26, fontWeight: FontWeight.bold),
                                                 ),
                                                 const Icon(Icons.keyboard_arrow_up),
                                               ],
@@ -113,6 +145,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   height: 40,
                   child: Button(
                     onPressed: () {
+                      signInWithKakao();
                       HapticFeedback.lightImpact();
                     },
                     child: const Icon(CupertinoIcons.search),

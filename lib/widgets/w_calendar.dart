@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+// const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
 
 var theme;
 
@@ -47,7 +48,8 @@ class Calendar extends StatelessWidget {
     return GridView.count(
       crossAxisCount: 7,
       physics: const NeverScrollableScrollPhysics(),
-      children: weekdays.map((text) => Center(child: Text(text, style: TextStyle(color: _getDayColor(text), fontWeight: FontWeight.bold)))).toList(),
+      children:
+          weekdays.map((text) => Center(child: Text(text, style: TextStyle(fontSize: 16, color: _getDayColor(text), fontWeight: FontWeight.bold)))).toList(),
     );
   }
 
@@ -126,9 +128,9 @@ class Calendar extends StatelessWidget {
   }
 
   Color _getDayColor(String day) {
-    if (day == "Sun") {
+    if (day == "Sun" || day == "일") {
       return Colors.red;
-    } else if (day == "Sat") {
+    } else if (day == "Sat" || day == "토") {
       return Colors.blue;
     } else {
       return theme.hintColor;

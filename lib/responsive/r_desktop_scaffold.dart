@@ -82,7 +82,7 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
     return Obx(() {
       SelectedDayController.to.selectedDay;
       return FutureBuilder(
-        future: Future.delayed(const Duration(milliseconds: 300), () => readJsonData()),
+        future: Future.delayed(const Duration(milliseconds: 300), () => fetchReportTableJsonData()),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting || snapshot.connectionState == ConnectionState.active) {
             return _BuildLodingWidget();
@@ -111,15 +111,15 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(items[index]["회의실"].toString().replaceAll("<br>", " ")),
+                            SelectableText(items[index]["회의실"].toString().replaceAll("<br>", " ")),
                             _BuildLineWidget(),
-                            Text(items[index]["회의명"].toString().replaceAll("<br>", " ")),
+                            SelectableText(items[index]["회의명"].toString().replaceAll("<br>", " ")),
                             _BuildLineWidget(),
-                            Text(items[index]["사용부서"].toString().replaceAll("<br>", " ")),
+                            SelectableText(items[index]["사용부서"].toString().replaceAll("<br>", " ")),
                             _BuildLineWidget(),
-                            Text(items[index]["사용시간"].toString().split(">")[1]),
+                            SelectableText(items[index]["사용시간"].toString().split(">")[1]),
                             _BuildLineWidget(),
-                            Text(items[index]["신청자"].toString().replaceAll("<br>", " ")),
+                            SelectableText(items[index]["신청자"].toString().replaceAll("<br>", " ")),
                           ],
                         ),
                       ],

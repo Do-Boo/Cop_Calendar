@@ -9,9 +9,7 @@ class ThemeController extends GetxController {
   ThemeMode get themeMode => _themeMode.value;
   set themeMode(ThemeMode mode) => _themeMode.value = mode;
 
-  void toggleTheme() {
-    themeMode = themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
-  }
+  void toggleTheme() => themeMode = themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
 }
 
 class SelectedDayController extends GetxController {
@@ -47,6 +45,6 @@ class DScrollController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    scrollController.addListener(() => isAtMax = scrollController.size == 0.95);
+    scrollController.addListener(() => isAtMax = scrollController.size > 0.98);
   }
 }

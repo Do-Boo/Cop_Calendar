@@ -66,21 +66,14 @@ class _MobileScaffoldState extends State<MobileScaffold> {
                 minChildSize: (screenSize.height - screenSize.width - 56) / screenSize.height,
                 maxChildSize: 1,
                 builder: (BuildContext context, ScrollController scrollController) {
-                  return NotificationListener<UserScrollNotification>(
-                    onNotification: (notification) {
-                      // DScrollController.to.isAtMax = _controller.size > 0.8;
-                      print(DScrollController.to.isAtMax);
-                      return true;
-                    },
-                    child: Container(
-                      color: theme.primaryColor,
-                      child: Column(
-                        children: [
-                          _buildDragHandle(),
-                          _buildRoomSelectionButtons(room),
-                          _buildRoomList(scrollController),
-                        ],
-                      ),
+                  return Container(
+                    color: theme.primaryColor,
+                    child: Column(
+                      children: [
+                        _buildDragHandle(),
+                        _buildRoomSelectionButtons(room),
+                        _buildRoomList(scrollController),
+                      ],
                     ),
                   );
                 },
@@ -158,7 +151,7 @@ class _MobileScaffoldState extends State<MobileScaffold> {
     return Obx(() {
       SelectedDayController.to.selectedDay;
       return FutureBuilder(
-        future: Future.delayed(const Duration(milliseconds: 300), () => readJsonData()),
+        future: Future.delayed(const Duration(milliseconds: 300), () => fetchReportTableJsonData()),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting || snapshot.connectionState == ConnectionState.active) {
             return _BuildLodingWidget();
