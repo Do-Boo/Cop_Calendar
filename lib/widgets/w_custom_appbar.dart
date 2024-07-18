@@ -1,4 +1,5 @@
 import 'package:events_app/g_gets.dart';
+import 'package:events_app/page/p_sign_page.dart';
 import 'package:events_app/widgets/w_custom_dialog.dart';
 import 'package:events_app/widgets/w_date_picker.dart';
 import 'package:events_app/widgets/w_button.dart';
@@ -19,6 +20,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     theme = Theme.of(context);
     final statusBarHeight = MediaQuery.of(context).viewPadding.top;
     return SafeArea(
+      // key: key,
       top: true,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -36,8 +38,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         height: 40,
                         width: 40,
                         child: Button(
-                          onPressed: () => {
-                            HapticFeedback.lightImpact(),
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                            HapticFeedback.lightImpact();
                           },
                           child: const Icon(Icons.density_medium),
                         ),
@@ -93,8 +96,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                                   height: 40,
                                                   width: 40,
                                                   child: Button(
-                                                    onPressed: () => {
-                                                      HapticFeedback.lightImpact(),
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                      Scaffold.of(context).openDrawer();
+                                                      HapticFeedback.lightImpact();
                                                     },
                                                     child: const Icon(Icons.density_medium),
                                                   ),
@@ -152,14 +157,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             title: "회원가입",
                             content: "회원 정보가 없습니다.\n회원 정보를 입력해주세요.",
                             onPressed: () {
-                              showGeneralDialog(
-                                context: context,
-                                barrierDismissible: true,
-                                pageBuilder: (BuildContext buildContext, Animation<double> animation, Animation<double> secondaryAnimation) {
-                                  return Container();
-                                },
-                              );
+                              Navigator.of(context).pop();
                               HapticFeedback.lightImpact();
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation, secondaryAnimation) => const SignPage(),
+                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                    var begin = const Offset(0.0, 1.0);
+                                    var end = Offset.zero;
+                                    var curve = Curves.ease;
+
+                                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                                    return SlideTransition(
+                                      position: animation.drive(tween),
+                                      child: child,
+                                    );
+                                  },
+                                ),
+                              );
                             },
                           );
                         },

@@ -16,7 +16,7 @@ final appThemeData = {
     ),
     fontFamily: "GowunDodum",
     textSelectionTheme: const TextSelectionThemeData(
-      cursorColor: Colors.red,
+      cursorColor: Colors.blue,
       selectionColor: Colors.blue,
       selectionHandleColor: Colors.green,
     ),
@@ -31,7 +31,7 @@ final appThemeData = {
     ),
     fontFamily: "GowunDodum",
     textSelectionTheme: const TextSelectionThemeData(
-      cursorColor: Colors.red,
+      cursorColor: Colors.blue,
       selectionColor: Colors.blue,
       selectionHandleColor: Colors.green,
     ),

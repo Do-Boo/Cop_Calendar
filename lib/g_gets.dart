@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class ThemeController extends GetxController {
@@ -46,5 +49,21 @@ class DScrollController extends GetxController {
   void onInit() {
     super.onInit();
     scrollController.addListener(() => isAtMax = scrollController.size > 0.98);
+  }
+}
+
+class ImageIOController extends GetxController {
+  static ImageIOController get to => Get.find();
+  final Rx<File> _image = Rx<File>(File(''));
+
+  void getImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      _image.value = File(pickedFile.path);
+    } else {
+      print('사진을 선택하지 않았습니다.');
+    }
   }
 }
