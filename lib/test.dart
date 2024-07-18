@@ -1,5 +1,4 @@
-import 'package:events_app/theme/app_theme.dart';
-import 'package:events_app/widgets/w_shimmer.dart';
+import 'package:events_app/widgets/w_custom_dialog.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,52 +10,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: appThemeData[AppTheme.Light],
-      darkTheme: appThemeData[AppTheme.Dark],
-      themeMode: ThemeMode.light,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Shimmer Loading Example'),
-        ),
-        body: ListView.builder(
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: SizedBox(
-                height: 36,
-                child: Row(
-                  children: [
-                    Container(
-                      height: double.infinity,
-                      width: 4,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).hintColor.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(child: ShimmerWidget(borderRadius: BorderRadius.circular(4))),
-                          const SizedBox(height: 4),
-                          Expanded(
-                            child: Row(
-                              children: [
-                                Expanded(child: ShimmerWidget(borderRadius: BorderRadius.circular(4))),
-                                const Expanded(child: SizedBox()),
-                                const Expanded(child: SizedBox()),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
+    return const MaterialApp(
+      title: 'My App',
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Custom Alert Dialog Example'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          child: const Text('Show Alert Dialog'),
+          onPressed: () {
+            showDialog(context: context, builder: (context) => const CustomDialogWidget());
           },
         ),
       ),

@@ -1,5 +1,5 @@
-import 'package:events_app/api/api_kakao_login.dart';
 import 'package:events_app/g_gets.dart';
+import 'package:events_app/widgets/w_custom_dialog.dart';
 import 'package:events_app/widgets/w_date_picker.dart';
 import 'package:events_app/widgets/w_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -145,7 +145,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   height: 40,
                   child: Button(
                     onPressed: () {
-                      signInWithKakao();
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return CustomDialogWidget(
+                            title: "회원가입",
+                            content: "회원 정보가 없습니다.\n회원 정보를 입력해주세요.",
+                            onPressed: () {
+                              showGeneralDialog(
+                                context: context,
+                                barrierDismissible: true,
+                                pageBuilder: (BuildContext buildContext, Animation<double> animation, Animation<double> secondaryAnimation) {
+                                  return Container();
+                                },
+                              );
+                              HapticFeedback.lightImpact();
+                            },
+                          );
+                        },
+                      );
+                      // signInWithKakao();
                       HapticFeedback.lightImpact();
                     },
                     child: const Icon(CupertinoIcons.search),
