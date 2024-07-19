@@ -1,14 +1,24 @@
+import 'dart:io';
+
+import 'package:events_app/g_gets.dart';
 import 'package:events_app/widgets/w_button.dart';
+import 'package:events_app/widgets/w_custom_image.dart';
 import 'package:events_app/widgets/w_round_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
-class SignPage extends StatelessWidget {
+class SignPage extends StatefulWidget {
   const SignPage({super.key});
 
   @override
+  State<SignPage> createState() => _SignPageState();
+}
+
+class _SignPageState extends State<SignPage> {
+  @override
   Widget build(BuildContext context) {
+    final File image;
     final theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
@@ -44,16 +54,44 @@ class SignPage extends StatelessWidget {
                   children: [
                     const Text("Sign in", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 32),
-                    RoundWidget(
-                      color: theme.hintColor,
-                      child: SizedBox(
-                        height: 72,
-                        width: 72,
+                    Obx(() {
+                      return SizedBox(
+                        height: 112,
+                        width: 112,
                         child: Button(
                           color: theme.hintColor,
+                          onPressed: () async {
+                            HapticFeedback.lightImpact();
+                            await ImagePickerController.to.selectImage();
+                          },
+                          child: ClipOval(
+                            child: FutureBuilder<bool>(
+                              future: ImagePickerController.to.isImageExists,
+                              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                } else {
+                                  if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else {
+                                    if (snapshot.data ?? false) {
+                                      return Image.file(
+                                        height: double.infinity,
+                                        width: double.infinity,
+                                        File(ImagePickerController.to.selectedImage.path),
+                                        fit: BoxFit.cover,
+                                      );
+                                    } else {
+                                      return const CustomProfile();
+                                    }
+                                  }
+                                }
+                              },
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                     const SizedBox(height: 16),
                     RoundWidget(
                       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),

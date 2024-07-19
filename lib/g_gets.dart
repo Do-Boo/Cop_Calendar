@@ -52,18 +52,29 @@ class DScrollController extends GetxController {
   }
 }
 
-class ImageIOController extends GetxController {
-  static ImageIOController get to => Get.find();
-  final Rx<File> _image = Rx<File>(File(''));
+class ImagePickerController extends GetxController {
+  static ImagePickerController get to => Get.find();
+  final Rx<File> _selectedImage = Rx<File>(File(''));
+  final RxBool isImageSelected = false.obs;
 
-  void getImage() async {
+  File get selectedImage {
+    if (_selectedImage.value.existsSync()) {
+      isImageSelected.value = true;
+    }
+    return _selectedImage.value;
+  }
+
+  Future<bool> get isImageExists async => await selectedImage.exists();
+
+  Future<void> selectImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      _image.value = File(pickedFile.path);
+      _selectedImage.value = File(pickedFile.path);
+      isImageSelected.value = true;
     } else {
-      print('사진을 선택하지 않았습니다.');
+      isImageSelected.value = false;
     }
   }
 }
