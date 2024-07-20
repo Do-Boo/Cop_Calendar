@@ -18,8 +18,8 @@ class SignPage extends StatefulWidget {
 class _SignPageState extends State<SignPage> {
   @override
   Widget build(BuildContext context) {
-    final File image;
     final theme = Theme.of(context);
+    final nicknameController = Get.put(TextFieldsController());
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -82,7 +82,9 @@ class _SignPageState extends State<SignPage> {
                                         fit: BoxFit.cover,
                                       );
                                     } else {
-                                      return const CustomProfile();
+                                      return Obx(() {
+                                        return CustomProfile(nickName: nicknameController.getText);
+                                      });
                                     }
                                   }
                                 }
@@ -97,8 +99,9 @@ class _SignPageState extends State<SignPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                       borderRadius: BorderRadius.circular(18),
                       color: theme.hintColor.withOpacity(0.1),
-                      child: const TextField(
-                        decoration: InputDecoration(
+                      child: TextField(
+                        controller: nicknameController.controller,
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: "닉네임",
                           hintStyle: TextStyle(

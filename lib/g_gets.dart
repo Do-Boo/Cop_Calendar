@@ -78,3 +78,19 @@ class ImagePickerController extends GetxController {
     }
   }
 }
+
+class TextFieldsController extends GetxController {
+  static TextFieldsController get to => Get.find();
+  final _controller = TextEditingController();
+  final RxString _getText = "".obs;
+
+  String get getText => _getText.value;
+  TextEditingController get controller => _controller;
+  set setText(String text) => _getText.value = text;
+
+  @override
+  void onInit() {
+    super.onInit();
+    controller.addListener(() => setText = controller.text);
+  }
+}
