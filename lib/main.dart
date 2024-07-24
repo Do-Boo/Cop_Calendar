@@ -1,4 +1,5 @@
 import "package:events_app/api/api_data.dart";
+import "package:events_app/api/api_database_query.dart";
 import "package:events_app/g_gets.dart";
 import "package:events_app/responsive/r_desktop_scaffold.dart";
 import "package:events_app/responsive/r_layout.dart";
@@ -15,9 +16,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isDarkTheme = prefs.getBool("isDarkTheme") ?? false;
+  print(prefs.getString("tel") ?? "");
+  final items = await fetchUsersTableJsonData(prefs.getString("tel") ?? "");
+  if (items.isNotEmpty) {
+    print(items[0]["profile"].toString());
+  }
   // await prefs.setString("nickName", "");
   // await prefs.setString("profile", "");
-  await prefs.setString("tel", "");
 
   // final userName = prefs.getString("username") ?? "";
   // final profile = prefs.getString("profile") ?? "";

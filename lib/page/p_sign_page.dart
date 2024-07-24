@@ -58,9 +58,10 @@ class _SignPageState extends State<SignPage> {
               width: 40,
               child: Button(
                 child: const Icon(Icons.close),
-                onPressed: () => {
-                  Navigator.of(context).pop(),
-                  HapticFeedback.lightImpact(),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  HapticFeedback.lightImpact();
+                  nickNameController.controller.text = "";
                 },
               ),
             ),
@@ -76,7 +77,7 @@ class _SignPageState extends State<SignPage> {
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         child: Column(
           children: [
-            const Text("Login", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            const Text("Login", style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
             const SizedBox(height: 32),
             _buildProfileImage(),
             const SizedBox(height: 16),
@@ -164,14 +165,17 @@ class _SignPageState extends State<SignPage> {
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
       borderRadius: BorderRadius.circular(18),
       color: theme.hintColor.withOpacity(0.1),
-      child: TextField(
-        controller: nickNameController.controller,
-        decoration: const InputDecoration(
-          border: InputBorder.none,
-          hintText: "닉네임",
-          hintStyle: TextStyle(fontSize: 16, color: Colors.grey),
-        ),
-      ),
+      child: Obx(() {
+        nickNameController.getText;
+        return TextField(
+          controller: nickNameController.controller,
+          decoration: const InputDecoration(
+            border: InputBorder.none,
+            hintText: "닉네임",
+            hintStyle: TextStyle(fontSize: 16, color: Colors.grey),
+          ),
+        );
+      }),
     );
   }
 
@@ -186,10 +190,7 @@ class _SignPageState extends State<SignPage> {
         decoration: const InputDecoration(
           border: InputBorder.none,
           hintText: "전화번호",
-          hintStyle: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ),
+          hintStyle: TextStyle(fontSize: 16, color: Colors.grey),
         ),
       ),
     );
@@ -205,6 +206,7 @@ class _SignPageState extends State<SignPage> {
         color: theme.hintColor.withOpacity(0.2),
         child: const Text("등록"),
         onPressed: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
           if (nickNameController.getText == "") {
             await showDialog(
               context: context,
@@ -229,7 +231,6 @@ class _SignPageState extends State<SignPage> {
             );
             return;
           }
-          SharedPreferences prefs = await SharedPreferences.getInstance();
           RenderRepaintBoundary boundary = globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
           ui.Image image = await boundary.toImage();
           ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
@@ -244,7 +245,7 @@ class _SignPageState extends State<SignPage> {
                 builder: (context) {
                   return const CustomDialogWidget(
                     title: "알림",
-                    content: "이미 등록된 회원입니다.",
+                    content: "로그인이 완료되었습니다.",
                   );
                 },
               );
@@ -254,11 +255,12 @@ class _SignPageState extends State<SignPage> {
                 builder: (context) {
                   return const CustomDialogWidget(
                     title: "알림",
-                    content: "등록이 완료되었습니다.",
+                    content: "등록되지 않은 회원입니다.\n자동으로 등록합니다.",
                   );
                 },
               );
             }
+            nickNameController.controller.text = "";
             Navigator.of(context).pop();
             HapticFeedback.lightImpact();
           }

@@ -152,40 +152,39 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Button(
                     onPressed: () async {
                       final prefs = await SharedPreferences.getInstance();
-                      final tel = prefs.getString("tel") ?? "";
-                      print(tel);
-                      signIn();
-                      if (tel == "") {
-                        showDialog(
+                      if (prefs.getString("tel") != "") {
+                        await showDialog(
                           context: context,
                           builder: (context) {
-                            return CustomDialogWidget(
-                              title: "회원가입",
-                              content: "회원 정보가 없습니다.\n회원 정보를 입력해주세요.",
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                HapticFeedback.lightImpact();
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder: (context, animation, secondaryAnimation) => const SignPage(),
-                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                      var begin = const Offset(0.0, 1.0);
-                                      var end = Offset.zero;
-                                      var curve = Curves.ease;
-
-                                      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-                                      return SlideTransition(
-                                        position: animation.drive(tween),
-                                        child: child,
-                                      );
-                                    },
-                                  ),
-                                );
-                              },
+                            return const CustomDialogWidget(
+                              title: "알림",
+                              content: "로그아웃하겠습니다.",
                             );
                           },
+                        );
+                        await prefs.setString("tel", "");
+                        return;
+                      }
+                      signIn();
+                      if (prefs.getString("tel") == "") {
+                        HapticFeedback.lightImpact();
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (context, animation, secondaryAnimation) => const SignPage(),
+                            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                              var begin = const Offset(0.0, 1.0);
+                              var end = Offset.zero;
+                              var curve = Curves.ease;
+
+                              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                              return SlideTransition(
+                                position: animation.drive(tween),
+                                child: child,
+                              );
+                            },
+                          ),
                         );
                       }
                       HapticFeedback.lightImpact();
