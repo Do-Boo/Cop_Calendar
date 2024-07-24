@@ -15,11 +15,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isDarkTheme = prefs.getBool("isDarkTheme") ?? false;
-  await prefs.setString("username", "your username");
-  await prefs.setString("profile", "your profile");
+  // await prefs.setString("nickName", "");
+  // await prefs.setString("profile", "");
+  await prefs.setString("tel", "");
 
-  final userName = prefs.getString("username") ?? "";
-  final profile = prefs.getString("profile") ?? "";
+  // final userName = prefs.getString("username") ?? "";
+  // final profile = prefs.getString("profile") ?? "";
 
   KakaoSdk.init(
     nativeAppKey: kakaoNativeAppKey,
@@ -43,7 +44,6 @@ class MyApp extends StatelessWidget {
           Get.put(SelectedDayController());
           Get.put(SelectedRoomController());
           Get.put(DScrollController());
-          Get.put(ImagePickerController());
         }),
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,

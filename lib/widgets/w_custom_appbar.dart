@@ -1,3 +1,4 @@
+import 'package:events_app/api/api_login.dart';
 import 'package:events_app/g_gets.dart';
 import 'package:events_app/page/p_sign_page.dart';
 import 'package:events_app/widgets/w_custom_dialog.dart';
@@ -149,39 +150,44 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   width: 40,
                   height: 40,
                   child: Button(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return CustomDialogWidget(
-                            title: "회원가입",
-                            content: "회원 정보가 없습니다.\n회원 정보를 입력해주세요.",
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              HapticFeedback.lightImpact();
-                              Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                  pageBuilder: (context, animation, secondaryAnimation) => const SignPage(),
-                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                    var begin = const Offset(0.0, 1.0);
-                                    var end = Offset.zero;
-                                    var curve = Curves.ease;
+                    onPressed: () async {
+                      final prefs = await SharedPreferences.getInstance();
+                      final tel = prefs.getString("tel") ?? "";
+                      print(tel);
+                      signIn();
+                      if (tel == "") {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return CustomDialogWidget(
+                              title: "회원가입",
+                              content: "회원 정보가 없습니다.\n회원 정보를 입력해주세요.",
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                HapticFeedback.lightImpact();
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder: (context, animation, secondaryAnimation) => const SignPage(),
+                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                      var begin = const Offset(0.0, 1.0);
+                                      var end = Offset.zero;
+                                      var curve = Curves.ease;
 
-                                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
-                                    return SlideTransition(
-                                      position: animation.drive(tween),
-                                      child: child,
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      );
-                      // signInWithKakao();
+                                      return SlideTransition(
+                                        position: animation.drive(tween),
+                                        child: child,
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        );
+                      }
                       HapticFeedback.lightImpact();
                     },
                     child: const Icon(CupertinoIcons.search),

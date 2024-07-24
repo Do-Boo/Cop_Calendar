@@ -57,14 +57,14 @@ class ImagePickerController extends GetxController {
   final Rx<File> _selectedImage = Rx<File>(File(''));
   final RxBool isImageSelected = false.obs;
 
-  File get selectedImage {
-    if (_selectedImage.value.existsSync()) {
-      isImageSelected.value = true;
-    }
-    return _selectedImage.value;
-  }
+  File get selectedImage => _selectedImage.value;
 
   Future<bool> get isImageExists async => await selectedImage.exists();
+
+  Future<void> imageEmpty() async {
+    _selectedImage.value = File('');
+    isImageSelected.value = false;
+  }
 
   Future<void> selectImage() async {
     final picker = ImagePicker();
@@ -74,6 +74,7 @@ class ImagePickerController extends GetxController {
       _selectedImage.value = File(pickedFile.path);
       isImageSelected.value = true;
     } else {
+      _selectedImage.value = File('');
       isImageSelected.value = false;
     }
   }

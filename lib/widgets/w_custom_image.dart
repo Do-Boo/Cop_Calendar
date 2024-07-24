@@ -1,8 +1,8 @@
-import 'package:events_app/theme/app_color.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomProfile extends StatelessWidget {
-  final nickName;
+  final dynamic nickName;
 
   const CustomProfile({super.key, this.nickName});
 
@@ -12,13 +12,11 @@ class CustomProfile extends StatelessWidget {
       alignment: Alignment.center,
       height: 112,
       width: 112,
-      // color: color,
-      child: Text(
+      color: Colors.white,
+      child: AutoSizeText(
         nickName ?? "닉네임",
-        style: const TextStyle(
-          fontSize: 16,
-          color: Colors.black,
-        ),
+        maxLines: 1,
+        style: const TextStyle(fontSize: 178, color: Colors.black, fontWeight: FontWeight.bold),
       ),
     );
   }

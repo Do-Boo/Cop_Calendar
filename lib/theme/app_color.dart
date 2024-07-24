@@ -1,14 +1,15 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-Color getRandomColor() {
+Color generateRandomColor() {
   final random = Random();
   return Color.fromRGBO(
-    random.nextInt(256), // Red
-    random.nextInt(256), // Green
-    random.nextInt(256), // Blue
-    1, // Alpha
+    random.nextInt(256),
+    random.nextInt(256),
+    random.nextInt(256),
+    1,
   );
 }
 
-get rndColor => getRandomColor();
+get complementaryColor => randomColor.fromRGBO(255 - randomColor.red, 255 - randomColor.green, 255 - randomColor.blue, 1);
+get randomColor => generateRandomColor();

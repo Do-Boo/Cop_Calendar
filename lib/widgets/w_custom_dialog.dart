@@ -49,17 +49,19 @@ class CustomDialogWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 40,
-                    width: 88,
-                    child: Button(
-                      color: Colors.transparent,
-                      border: Border.all(color: theme.hintColor.withOpacity(0.4)),
-                      onPressed: onPressed ?? () {},
-                      child: const Text("확인", style: TextStyle(fontSize: 16)),
-                    ),
-                  ),
-                  const SizedBox(width: 24),
+                  onPressed != null
+                      ? SizedBox(
+                          height: 40,
+                          width: 88,
+                          child: Button(
+                            color: Colors.transparent,
+                            border: Border.all(color: theme.hintColor.withOpacity(0.4)),
+                            onPressed: onPressed ?? () {},
+                            child: const Text("확인", style: TextStyle(fontSize: 16)),
+                          ),
+                        )
+                      : const SizedBox(),
+                  onPressed != null ? const SizedBox(width: 24) : const SizedBox(),
                   SizedBox(
                     height: 40,
                     width: 88,
