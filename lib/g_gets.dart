@@ -1,9 +1,12 @@
-import 'dart:io';
-
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
+import "dart:io";
+import "package:events_app/api/api_kakao_login.dart";
+import "package:events_app/api/api_social_login.dart";
+import "package:flutter/material.dart";
+import "package:get/get.dart";
+import "package:image_picker/image_picker.dart";
+import "package:intl/intl.dart";
+import "package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart";
+import "package:shared_preferences/shared_preferences.dart";
 
 class ThemeController extends GetxController {
   static ThemeController get to => Get.find();
@@ -54,7 +57,7 @@ class DScrollController extends GetxController {
 
 class ImagePickerController extends GetxController {
   static ImagePickerController get to => Get.find();
-  final Rx<File> _selectedImage = Rx<File>(File(''));
+  final Rx<File> _selectedImage = Rx<File>(File(""));
   final RxBool isImageSelected = false.obs;
 
   File get selectedImage => _selectedImage.value;
@@ -62,7 +65,7 @@ class ImagePickerController extends GetxController {
   Future<bool> get isImageExists async => await selectedImage.exists();
 
   Future<void> imageEmpty() async {
-    _selectedImage.value = File('');
+    _selectedImage.value = File("");
     isImageSelected.value = false;
   }
 
@@ -74,7 +77,7 @@ class ImagePickerController extends GetxController {
       _selectedImage.value = File(pickedFile.path);
       isImageSelected.value = true;
     } else {
-      _selectedImage.value = File('');
+      _selectedImage.value = File("");
       isImageSelected.value = false;
     }
   }
@@ -93,5 +96,77 @@ class TextFieldsController extends GetxController {
   void onInit() {
     super.onInit();
     controller.addListener(() => setText = controller.text);
+  }
+}
+
+class AuthController extends GetxController {
+  static AuthController get to => Get.find();
+  final RxBool _isLoggedIn = false.obs;
+  final RxString _id = "".obs;
+  final RxString _name = "".obs;
+  final RxString _profile =
+      "https://postfiles.pstatic.net/MjAyMTA4MDlfMjg0/MDAxNjI4NTEwNjAyNDA4.GgeIKeGBu5yYWX9045TbFhmMZfewgDis7M6fD9iZsdAg.a1bapsTv33BhVcxbzawB9SRdUVcpo306y7KJgGzWO2Qg.JPEG.soeunkim764/0A39D13C-8535-4526-ADAB-0CC5926B05E5.jpeg?type=w773"
+          .obs;
+  final SocialLogin _socialLogin = KakaoLogin();
+
+  bool get isLoggedIn => _isLoggedIn.value;
+  String get id => _id.value;
+  String get name => _name.value;
+  String get profile => _profile.value;
+
+  @override
+  void onInit() {
+    super.onInit();
+    checkAutoLogin();
+  }
+
+  Future<void> login() async {
+    bool success = await _socialLogin.login();
+    if (success) {
+      User user = await UserApi.instance.me();
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool("checkAutoLogin", true);
+      await prefs.setString("id", "${user.id}");
+      await prefs.setString("name", user.kakaoAccount!.profile?.nickname ?? "");
+      await prefs.setString("profile", user.kakaoAccount?.profile?.profileImageUrl ?? "");
+
+      _id.value = prefs.getString("id") ?? "";
+      _name.value = prefs.getString("name") ?? "";
+      _profile.value = prefs.getString("profile") ?? "";
+      _isLoggedIn.value = true;
+    } else {
+      print("Login failed");
+    }
+  }
+
+  Future<void> logout() async {
+    bool success = await _socialLogin.logout();
+    if (success) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove("checkAutoLogin");
+      await prefs.remove("id");
+      await prefs.remove("name");
+      await prefs.remove("profile");
+
+      _id.value = "";
+      _name.value = "";
+      _profile.value = "";
+      _isLoggedIn.value = false;
+    } else {
+      print("Logout failed");
+    }
+  }
+
+  Future<void> checkAutoLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool checkAutoLogin = prefs.getBool("checkAutoLogin") ?? false;
+
+    if (checkAutoLogin) {
+      _id.value = prefs.getString("id") ?? "";
+      _name.value = prefs.getString("name") ?? "";
+      _profile.value = prefs.getString("profile") ?? "";
+      _isLoggedIn.value = true;
+    }
   }
 }

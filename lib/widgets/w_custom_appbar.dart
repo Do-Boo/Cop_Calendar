@@ -1,7 +1,6 @@
-import 'package:events_app/api/api_login.dart';
+import 'package:events_app/api/api_kakao_login.dart';
+import 'package:events_app/api/v_model.dart';
 import 'package:events_app/g_gets.dart';
-import 'package:events_app/page/p_sign_page.dart';
-import 'package:events_app/widgets/w_custom_dialog.dart';
 import 'package:events_app/widgets/w_date_picker.dart';
 import 'package:events_app/widgets/w_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,8 +19,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     theme = Theme.of(context);
     final statusBarHeight = MediaQuery.of(context).viewPadding.top;
+    final ViewModel viewModel = ViewModel();
+
     return SafeArea(
-      // key: key,
       top: true,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -151,41 +151,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   height: 40,
                   child: Button(
                     onPressed: () async {
-                      final prefs = await SharedPreferences.getInstance();
-                      if (prefs.getString("tel") != "") {
-                        await showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const CustomDialogWidget(
-                              title: "알림",
-                              content: "로그아웃하겠습니다.",
-                            );
-                          },
-                        );
-                        await prefs.setString("tel", "");
-                        return;
-                      }
-                      signIn();
-                      if (prefs.getString("tel") == "") {
-                        HapticFeedback.lightImpact();
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder: (context, animation, secondaryAnimation) => const SignPage(),
-                            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                              var begin = const Offset(0.0, 1.0);
-                              var end = Offset.zero;
-                              var curve = Curves.ease;
-
-                              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-                              return SlideTransition(
-                                position: animation.drive(tween),
-                                child: child,
-                              );
-                            },
-                          ),
-                        );
+                      if (AuthController.to.isLoggedIn) {
+                        await viewModel.logout();
+                      } else {
+                        await viewModel.login();
                       }
                       HapticFeedback.lightImpact();
                     },

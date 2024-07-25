@@ -15,7 +15,6 @@ class MobileScaffold extends StatefulWidget {
 
 class _MobileScaffoldState extends State<MobileScaffold> {
   var theme;
-  final _controller = DScrollController.to.scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,20 @@ class _MobileScaffoldState extends State<MobileScaffold> {
 
     return Scaffold(
       appBar: const CustomAppBar(),
-      drawer: const Drawer(),
+      drawer: Drawer(
+        child: Obx(() {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(AuthController.to.id),
+                Image.network(AuthController.to.profile),
+                Text(AuthController.to.name),
+              ],
+            ),
+          );
+        }),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Stack(
         children: [

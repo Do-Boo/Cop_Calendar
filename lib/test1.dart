@@ -1,69 +1,56 @@
-import "package:flutter/material.dart";
+import 'package:events_app/api/api_data.dart';
+import 'package:events_app/api/api_kakao_login.dart';
+import 'package:events_app/api/v_model.dart';
+import 'package:flutter/material.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 void main() {
+  KakaoSdk.init(
+    nativeAppKey: kakaoNativeAppKey,
+    javaScriptAppKey: kakaoJavaScriptAppKey,
+  );
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final viewModel = ViewModel();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("Date Wheel Selector Example"),
+          title: const Text('Kakao Login Example'),
         ),
-        body: const Center(
-          child: MyWidget(),
+        body: Center(
+          child: Column(
+            children: [
+              // Image.network(viewModel.user?.kakaoAccount?.profile?.profileImageUrl ?? ""),
+              // Text(viewModel.user?.kakaoAccount?.profile?.nickname ?? ""),
+              ElevatedButton(
+                onPressed: () async {
+                  await viewModel.login();
+                  setState(() {});
+                },
+                child: const Text('Kakao Login'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  await viewModel.logout();
+                  setState(() {});
+                },
+                child: const Text('Kakao LogOut'),
+              ),
+            ],
+          ),
         ),
       ),
-    );
-  }
-}
-
-class MyWidget extends StatefulWidget {
-  const MyWidget({super.key});
-
-  @override
-  _MyWidgetState createState() => _MyWidgetState();
-}
-
-class _MyWidgetState extends State<MyWidget> {
-  final ScrollController _scrollController = ScrollController();
-  final double minChildSize = 0.5; // minChildSize를 정의합니다.
-  final double maxChildSize = 1.0; // maxChildSize를 정의합니다.
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.atEdge) {
-        if (_scrollController.position.pixels == 0) {
-          print('Reached minChildSize');
-          // minChildSize에 도착했을 때 수행할 액션을 여기에 작성합니다.
-        } else {
-          print('Reached maxChildSize');
-          // maxChildSize에 도착했을 때 수행할 액션을 여기에 작성합니다.
-        }
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-      minChildSize: minChildSize,
-      maxChildSize: maxChildSize,
-      builder: (BuildContext context, ScrollController scrollController) {
-        return ListView.builder(
-          controller: _scrollController, // ScrollController를 ListView에 연결합니다.
-          itemCount: 25,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(title: Text('Item ${index + 1}'));
-          },
-        );
-      },
     );
   }
 }
