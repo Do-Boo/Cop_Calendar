@@ -1,4 +1,5 @@
 import "dart:io";
+import "package:events_app/api/api_database_query.dart";
 import "package:events_app/api/api_kakao_login.dart";
 import "package:events_app/api/api_social_login.dart";
 import "package:flutter/material.dart";
@@ -103,15 +104,18 @@ class AuthController extends GetxController {
   static AuthController get to => Get.find();
   final RxBool _isLoggedIn = false.obs;
   final RxString _id = "".obs;
-  final RxString _name = "".obs;
+  final RxString _nickName = "로그인".obs;
   final RxString _profile =
       "https://postfiles.pstatic.net/MjAyMTA4MDlfMjg0/MDAxNjI4NTEwNjAyNDA4.GgeIKeGBu5yYWX9045TbFhmMZfewgDis7M6fD9iZsdAg.a1bapsTv33BhVcxbzawB9SRdUVcpo306y7KJgGzWO2Qg.JPEG.soeunkim764/0A39D13C-8535-4526-ADAB-0CC5926B05E5.jpeg?type=w773"
           .obs;
+
   final SocialLogin _socialLogin = KakaoLogin();
+  final _defaultProfile =
+      "https://postfiles.pstatic.net/MjAyMTA4MDlfMjg0/MDAxNjI4NTEwNjAyNDA4.GgeIKeGBu5yYWX9045TbFhmMZfewgDis7M6fD9iZsdAg.a1bapsTv33BhVcxbzawB9SRdUVcpo306y7KJgGzWO2Qg.JPEG.soeunkim764/0A39D13C-8535-4526-ADAB-0CC5926B05E5.jpeg?type=w773";
 
   bool get isLoggedIn => _isLoggedIn.value;
   String get id => _id.value;
-  String get name => _name.value;
+  String get nickName => _nickName.value;
   String get profile => _profile.value;
 
   @override
@@ -128,12 +132,14 @@ class AuthController extends GetxController {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool("checkAutoLogin", true);
       await prefs.setString("id", "${user.id}");
-      await prefs.setString("name", user.kakaoAccount!.profile?.nickname ?? "");
-      await prefs.setString("profile", user.kakaoAccount?.profile?.profileImageUrl ?? "");
+      await prefs.setString("nickName", user.kakaoAccount!.profile?.nickname ?? "");
+      await prefs.setString("profile", user.kakaoAccount?.profile?.profileImageUrl ?? _defaultProfile);
+
+      await insertUserPreferences();
 
       _id.value = prefs.getString("id") ?? "";
-      _name.value = prefs.getString("name") ?? "";
-      _profile.value = prefs.getString("profile") ?? "";
+      _nickName.value = prefs.getString("nickName") ?? "로그인";
+      _profile.value = prefs.getString("profile") ?? _defaultProfile;
       _isLoggedIn.value = true;
     } else {
       print("Login failed");
@@ -146,12 +152,12 @@ class AuthController extends GetxController {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.remove("checkAutoLogin");
       await prefs.remove("id");
-      await prefs.remove("name");
+      await prefs.remove("nickName");
       await prefs.remove("profile");
 
       _id.value = "";
-      _name.value = "";
-      _profile.value = "";
+      _nickName.value = "로그인";
+      _profile.value = _defaultProfile;
       _isLoggedIn.value = false;
     } else {
       print("Logout failed");
@@ -164,8 +170,8 @@ class AuthController extends GetxController {
 
     if (checkAutoLogin) {
       _id.value = prefs.getString("id") ?? "";
-      _name.value = prefs.getString("name") ?? "";
-      _profile.value = prefs.getString("profile") ?? "";
+      _nickName.value = prefs.getString("nickName") ?? "로그인";
+      _profile.value = prefs.getString("profile") ?? _defaultProfile;
       _isLoggedIn.value = true;
     }
   }

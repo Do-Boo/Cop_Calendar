@@ -1,56 +1,55 @@
-import 'package:events_app/api/api_data.dart';
-import 'package:events_app/api/api_kakao_login.dart';
-import 'package:events_app/api/v_model.dart';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 void main() {
-  KakaoSdk.init(
-    nativeAppKey: kakaoNativeAppKey,
-    javaScriptAppKey: kakaoJavaScriptAppKey,
-  );
-  runApp(const MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  final viewModel = ViewModel();
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  runApp(
+    MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Kakao Login Example'),
-        ),
         body: Center(
-          child: Column(
-            children: [
-              // Image.network(viewModel.user?.kakaoAccount?.profile?.profileImageUrl ?? ""),
-              // Text(viewModel.user?.kakaoAccount?.profile?.nickname ?? ""),
-              ElevatedButton(
-                onPressed: () async {
-                  await viewModel.login();
-                  setState(() {});
-                },
-                child: const Text('Kakao Login'),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  await viewModel.logout();
-                  setState(() {});
-                },
-                child: const Text('Kakao LogOut'),
-              ),
-            ],
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: Container(
+              width: 100.0,
+              height: 100.0,
+              color: Colors.blue,
+            ),
           ),
         ),
       ),
-    );
+    ),
+  );
+}
+
+class PolygonPainter extends CustomPainter {
+  final int sides;
+
+  PolygonPainter(this.sides);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.blue
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4.0;
+
+    final path = Path();
+    final angle = (math.pi * 2) / sides;
+
+    Offset center = Offset(size.width / 2, size.height / 2);
+    Offset startPoint = Offset(size.width / 2, 0);
+
+    path.moveTo(startPoint.dx, startPoint.dy);
+
+    for (int i = 1; i <= sides; i++) {
+      final double x = center.dx + size.width / 2 * math.cos(angle * i);
+      final double y = center.dy + size.height / 2 * math.sin(angle * i);
+      path.lineTo(x, y);
+    }
+    path.close();
+
+    canvas.drawPath(path, paint);
   }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

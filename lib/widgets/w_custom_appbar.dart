@@ -1,8 +1,8 @@
-import 'package:events_app/api/api_kakao_login.dart';
 import 'package:events_app/api/v_model.dart';
 import 'package:events_app/g_gets.dart';
 import 'package:events_app/widgets/w_date_picker.dart';
 import 'package:events_app/widgets/w_button.dart';
+import 'package:events_app/widgets/w_round_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,7 +19,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     theme = Theme.of(context);
     final statusBarHeight = MediaQuery.of(context).viewPadding.top;
-    final ViewModel viewModel = ViewModel();
 
     return SafeArea(
       top: true,
@@ -150,12 +149,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   width: 40,
                   height: 40,
                   child: Button(
+                    color: Colors.transparent,
                     onPressed: () async {
-                      if (AuthController.to.isLoggedIn) {
-                        await viewModel.logout();
-                      } else {
-                        await viewModel.login();
-                      }
                       HapticFeedback.lightImpact();
                     },
                     child: const Icon(CupertinoIcons.search),
@@ -165,14 +160,28 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 SizedBox(
                   width: 40,
                   height: 40,
-                  child: Button(
-                    child: Icon(ThemeController.to.themeMode == ThemeMode.dark ? CupertinoIcons.moon : Icons.sunny),
-                    onPressed: () async {
-                      ThemeController.to.toggleTheme();
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                      await prefs.setBool("isDarkTheme", ThemeController.to.themeMode == ThemeMode.dark);
-                      HapticFeedback.lightImpact();
-                    },
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          margin: const EdgeInsets.all(6),
+                          height: 6,
+                          width: 6,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(3),
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      Button(
+                        color: Colors.transparent,
+                        child: const Icon(CupertinoIcons.bell, size: 26),
+                        onPressed: () async {
+                          HapticFeedback.lightImpact();
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ],
