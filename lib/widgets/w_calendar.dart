@@ -102,7 +102,7 @@ class Calendar extends StatelessWidget {
                                 Expanded(
                                   child: Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
-                                      children: List<Widget>.generate(2, (_) {
+                                      children: List<Widget>.generate(0, (_) {
                                         return Obx(() {
                                           Color color = _dayColor(value, index, SelectedDayController.to.selectedDay);
                                           return rng.nextInt(2) == 0

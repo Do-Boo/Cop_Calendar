@@ -47,18 +47,22 @@ class _MobileScaffoldState extends State<MobileScaffold> {
           ),
           Positioned(
             bottom: 16.0,
-            left: MediaQuery.of(context).size.width / 2 - 36, // 중앙 하단
+            left: MediaQuery.of(context).size.width / 2 - 36,
             child: SizedBox(
               height: 28,
               width: 72,
-              child: Button(
-                color: Theme.of(context).hintColor.withOpacity(0.3),
-                onPressed: () {
-                  SelectedDayController.to.selectedDay = DateTime.now();
-                  HapticFeedback.lightImpact();
-                },
-                child: const Text("오늘"),
-              ),
+              child: Obx(() {
+                return !SelectedDayController.to.isAtToday
+                    ? Button(
+                        color: Theme.of(context).hintColor.withOpacity(0.3),
+                        onPressed: () {
+                          SelectedDayController.to.selectedDay = DateTime.now();
+                          HapticFeedback.lightImpact();
+                        },
+                        child: const Text("오늘"),
+                      )
+                    : const SizedBox();
+              }),
             ),
           ),
           // Obx(() {

@@ -1,14 +1,11 @@
-import 'package:events_app/api/v_model.dart';
 import 'package:events_app/g_gets.dart';
 import 'package:events_app/widgets/w_date_picker.dart';
 import 'package:events_app/widgets/w_button.dart';
-import 'package:events_app/widgets/w_round_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 var theme;
 
@@ -176,7 +173,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ),
                       Button(
                         color: Colors.transparent,
-                        child: const Icon(CupertinoIcons.bell, size: 26),
+                        child: const Icon(CupertinoIcons.bell, size: 24),
                         onPressed: () async {
                           HapticFeedback.lightImpact();
                         },
