@@ -1,5 +1,6 @@
 import "package:events_app/api/api_data.dart";
 import "package:events_app/g_gets.dart";
+import "package:events_app/page/p_search_page.dart";
 import "package:events_app/responsive/r_desktop_scaffold.dart";
 import "package:events_app/responsive/r_layout.dart";
 import "package:events_app/responsive/r_mobile_scaffold.dart";
@@ -47,6 +48,20 @@ class MyApp extends StatelessWidget {
         ],
         supportedLocales: const [
           Locale("ko", "KR"), // Korean
+        ],
+        initialRoute: '/',
+        getPages: [
+          GetPage(
+            name: '/',
+            page: () => const BasePage(),
+            transition: Transition.zoom,
+          ),
+          GetPage(
+            name: '/searchPage',
+            page: () => const SearchPage(),
+            transition: Transition.noTransition,
+          ),
+          // GetPage(name: '/third', page: () => ThirdPage()),
         ],
         theme: appThemeData[AppTheme.Light],
         darkTheme: appThemeData[AppTheme.Dark],

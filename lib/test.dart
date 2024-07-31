@@ -1,4 +1,3 @@
-import 'package:events_app/widgets/w_custom_dialog.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,28 +9,72 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'My App',
-      home: MyHomePage(),
+    return MaterialApp(
+      title: 'Screen Transition Animation',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const Screen1(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class Screen1 extends StatefulWidget {
+  const Screen1({super.key});
 
+  @override
+  _Screen1State createState() => _Screen1State();
+}
+
+class _Screen1State extends State<Screen1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Custom Alert Dialog Example'),
+        title: const Text('화면 1'),
       ),
-      body: Center(
-        child: ElevatedButton(
-          child: const Text('Show Alert Dialog'),
-          onPressed: () {
-            showDialog(context: context, builder: (context) => const CustomDialogWidget());
-          },
+      body: Container(
+        alignment: Alignment.topCenter,
+        child: Hero(
+          tag: '버튼',
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Screen2()),
+              );
+            },
+            child: const Text('화면 2로 이동'),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Screen2 extends StatefulWidget {
+  const Screen2({super.key});
+
+  @override
+  _Screen2State createState() => _Screen2State();
+}
+
+class _Screen2State extends State<Screen2> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('화면 2'),
+      ),
+      body: Hero(
+        tag: '버튼',
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: Colors.blue,
+          child: const Center(
+            child: Text('화면 2'),
+          ),
         ),
       ),
     );

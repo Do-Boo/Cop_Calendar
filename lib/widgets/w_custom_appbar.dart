@@ -149,6 +149,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     color: Colors.transparent,
                     onPressed: () async {
                       HapticFeedback.lightImpact();
+                      Get.toNamed('/searchPage');
                     },
                     child: const Icon(CupertinoIcons.search),
                   ),
