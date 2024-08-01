@@ -1,11 +1,11 @@
-import 'package:events_app/g_gets.dart';
-import 'package:events_app/widgets/w_date_picker.dart';
-import 'package:events_app/widgets/w_button.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import "package:events_app/g_gets.dart";
+import "package:events_app/widgets/w_date_picker.dart";
+import "package:events_app/widgets/w_button.dart";
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:get/get.dart";
+import "package:intl/intl.dart";
 
 var theme;
 
@@ -22,6 +22,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         height: preferredSize.height,
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(width: 1, color: Theme.of(context).hintColor.withOpacity(0.2))),
+        ),
         child: Stack(
           children: [
             Row(
@@ -147,9 +150,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   height: 40,
                   child: Button(
                     color: Colors.transparent,
-                    onPressed: () async {
+                    onPressed: () {
                       HapticFeedback.lightImpact();
-                      Get.toNamed('/searchPage');
+                      Get.toNamed("/searchPage");
                     },
                     child: const Icon(CupertinoIcons.search),
                   ),
@@ -175,8 +178,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       Button(
                         color: Colors.transparent,
                         child: const Icon(CupertinoIcons.bell, size: 24),
-                        onPressed: () async {
+                        onPressed: () {
                           HapticFeedback.lightImpact();
+                          Get.toNamed("/notificationPage");
                         },
                       ),
                     ],

@@ -1,5 +1,6 @@
 import "package:events_app/api/api_data.dart";
 import "package:events_app/g_gets.dart";
+import "package:events_app/page/p_notification_page.dart";
 import "package:events_app/page/p_search_page.dart";
 import "package:events_app/responsive/r_desktop_scaffold.dart";
 import "package:events_app/responsive/r_layout.dart";
@@ -60,6 +61,10 @@ class MyApp extends StatelessWidget {
             name: '/searchPage',
             page: () => const SearchPage(),
             transition: Transition.noTransition,
+          ),
+          GetPage(
+            name: '/notificationPage',
+            page: () => const NotificationPage(),
           ),
           // GetPage(name: '/third', page: () => ThirdPage()),
         ],

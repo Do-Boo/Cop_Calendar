@@ -49,6 +49,9 @@ class _SearchPageState extends State<SearchPage> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       height: 56,
       width: double.infinity,
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(width: 1, color: Theme.of(context).hintColor.withOpacity(0.2))),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -62,7 +65,7 @@ class _SearchPageState extends State<SearchPage> {
                   HapticFeedback.lightImpact();
                   setState(() => isExpanded = false);
                   _focusNode.unfocus();
-                  Future.delayed(const Duration(milliseconds: 550), () {
+                  Future.delayed(const Duration(milliseconds: 150), () {
                     Get.back();
                   });
                 },
@@ -71,7 +74,7 @@ class _SearchPageState extends State<SearchPage> {
           else
             const SizedBox(),
           AnimatedContainer(
-            duration: const Duration(seconds: 1),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.fastOutSlowIn,
             width: isExpanded ? MediaQuery.of(context).size.width - 72 : 40,
             height: 40,
@@ -100,7 +103,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
           AnimatedContainer(
             width: isExpanded ? 0 : 54,
-            duration: const Duration(seconds: 1),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.fastOutSlowIn,
             child: const SizedBox(),
           ),
