@@ -1,3 +1,4 @@
+import "package:events_app/api/api_database_query.dart";
 import "package:events_app/g_gets.dart";
 import "package:events_app/widgets/w_date_picker.dart";
 import "package:events_app/widgets/w_button.dart";
@@ -165,14 +166,28 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     children: [
                       Align(
                         alignment: Alignment.topRight,
-                        child: Container(
-                          margin: const EdgeInsets.all(6),
-                          height: 6,
-                          width: 6,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(3),
-                            color: Colors.red,
-                          ),
+                        child: FutureBuilder(
+                          future: fetchnotificationTableCheck(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting || snapshot.connectionState == ConnectionState.active) {
+                              return const SizedBox();
+                            } else if (snapshot.hasError) {
+                              return Text("Error: ${snapshot.error}");
+                            } else if (snapshot.hasData) {
+                              var items = snapshot.data as List<dynamic>;
+                              return Container(
+                                margin: const EdgeInsets.all(6),
+                                height: 6,
+                                width: 6,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
+                                  color: items[0]["not_read"] == 1 ? Colors.red : Colors.transparent,
+                                ),
+                              );
+                            } else {
+                              return const SizedBox();
+                            }
+                          },
                         ),
                       ),
                       Button(

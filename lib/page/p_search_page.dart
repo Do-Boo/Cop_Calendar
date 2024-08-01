@@ -18,6 +18,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   bool isExpanded = false;
+  final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
   @override
@@ -89,7 +90,15 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 ),
                 TextField(
+                  controller: _controller,
                   focusNode: _focusNode,
+                  onSubmitted: (text) {
+                    if (text.isEmpty) {
+                      print("object is empty");
+                      FocusScope.of(context).requestFocus(_focusNode);
+                    }
+                    print(text);
+                  },
                   decoration: InputDecoration(
                     hintText: isExpanded ? "검색어를 입력하세요" : "",
                     enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
