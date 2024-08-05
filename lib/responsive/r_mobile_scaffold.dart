@@ -1,3 +1,4 @@
+import 'package:events_app/api/api_database_query.dart';
 import 'package:events_app/g_gets.dart';
 import 'package:events_app/page/p_calender_page.dart';
 import 'package:events_app/widgets/w_button.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MobileScaffold extends StatefulWidget {
   const MobileScaffold({super.key});
@@ -175,7 +177,21 @@ class _MobileScaffoldState extends State<MobileScaffold> {
                         focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
                         contentPadding: EdgeInsets.symmetric(horizontal: 16),
                       ),
-                      onSubmitted: (_) async {},
+                      onSubmitted: (_) async {
+                        String result = await insertNotifications(
+                          _controller1.text,
+                          _controller2.text,
+                          '',
+                          SelectedDayController.to.selectedDay.toString(),
+                          '2',
+                          '3',
+                          isToggled.value ? '1' : '0',
+                        );
+                        Get.back();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(result)),
+                        );
+                      },
                     ),
                   ),
                 ),

@@ -186,7 +186,7 @@ class _CalenderPageState extends State<CalenderPage> {
                                       width: 128,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(4),
-                                        color: Colors.blue,
+                                        color: Colors.green,
                                       ),
                                     ),
                                     const SizedBox(height: 16),
@@ -225,7 +225,7 @@ class _CalenderPageState extends State<CalenderPage> {
                                             contentPadding: EdgeInsets.symmetric(horizontal: 16),
                                           ),
                                           onSubmitted: (value) async {
-                                            String result = await insertTelPreferences(items[index]["id"], value);
+                                            String result = await insertTel(items[index]["id"], value);
                                             ScaffoldMessenger.of(context).showSnackBar(
                                               SnackBar(content: Text(result)),
                                             );

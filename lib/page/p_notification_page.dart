@@ -207,7 +207,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                         ],
                                       ),
                                       Text(
-                                        items[index]["content"],
+                                        items[index]["description"],
                                         style: TextStyle(
                                           fontSize: 16,
                                           color: Theme.of(context).hintColor.withOpacity(items[index]["view"] == 0 ? 1 : 0.5),
