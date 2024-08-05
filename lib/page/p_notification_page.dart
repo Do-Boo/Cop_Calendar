@@ -57,7 +57,6 @@ class _NotificationPageState extends State<NotificationPage> {
                   ],
                 ),
               ),
-              // Container(height: 1, color: Theme.of(context).hintColor.withOpacity(0.2)),
               FutureBuilder(
                 future: Future.delayed(const Duration(milliseconds: 300), () => fetchnotificationTableJsonData("1")),
                 builder: (context, snapshot) {
@@ -197,15 +196,6 @@ class _NotificationPageState extends State<NotificationPage> {
                                     children: [
                                       Row(
                                         children: [
-                                          Text(
-                                            DateFormat('yyyy.MM.dd.(EE)', "ko_KR").format(DateTime.parse(items[index]["created_at"].toString())).toString(),
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: Theme.of(context).hintColor.withOpacity(items[index]["view"] == 0 ? 1 : 0.5),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 16),
                                           Text(
                                             items[index]["title"],
                                             style: TextStyle(

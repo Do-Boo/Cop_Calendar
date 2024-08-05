@@ -172,7 +172,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             if (snapshot.connectionState == ConnectionState.waiting || snapshot.connectionState == ConnectionState.active) {
                               return const SizedBox();
                             } else if (snapshot.hasError) {
-                              return Text("Error: ${snapshot.error}");
+                              return const SizedBox();
                             } else if (snapshot.hasData) {
                               var items = snapshot.data as List<dynamic>;
                               return Container(

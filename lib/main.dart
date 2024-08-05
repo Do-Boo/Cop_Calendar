@@ -1,3 +1,5 @@
+import "dart:ui";
+
 import "package:events_app/api/api_data.dart";
 import "package:events_app/g_gets.dart";
 import "package:events_app/page/p_notification_page.dart";
@@ -72,7 +74,7 @@ class MyApp extends StatelessWidget {
         darkTheme: appThemeData[AppTheme.Dark],
         themeMode: themeController.themeMode,
         home: const BasePage(),
-        debugShowCheckedModeBanner: false,
+        // debugShowCheckedModeBanner: false,
       ),
     );
   }
@@ -89,4 +91,12 @@ class BasePage extends StatelessWidget {
       desktopScaffold: DesktopScaffold(),
     );
   }
+}
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse, // 마우스 드래그 활성화
+      };
 }

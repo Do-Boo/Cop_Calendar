@@ -52,7 +52,7 @@ class DScrollController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    scrollController.addListener(() => isAtMax = scrollController.size > 0.98);
+    scrollController.addListener(() => isAtMax = scrollController.size > 0.95);
   }
 }
 
@@ -134,6 +134,8 @@ class AuthController extends GetxController {
       await prefs.setString("id", "${user.id}");
       await prefs.setString("nickName", user.kakaoAccount!.profile?.nickname ?? "");
       await prefs.setString("profile", user.kakaoAccount?.profile?.profileImageUrl ?? _defaultProfile);
+
+      print("${user.id}, ${user.kakaoAccount!.profile?.nickname ?? "없음"}, ${user.kakaoAccount?.profile?.profileImageUrl ?? "없음"}");
 
       await insertUserPreferences();
 

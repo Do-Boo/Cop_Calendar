@@ -111,8 +111,6 @@ class _SignPageState extends State<SignPage> {
                 context: context,
                 builder: (context) {
                   return CustomDialogWidget(
-                    title: "프로필 사진",
-                    content: "프로필 사진 지우시겠습니까?",
                     onPressed: () {
                       Navigator.of(context).pop();
                       HapticFeedback.lightImpact();
@@ -211,10 +209,7 @@ class _SignPageState extends State<SignPage> {
             await showDialog(
               context: context,
               builder: (context) {
-                return const CustomDialogWidget(
-                  title: "알림",
-                  content: "닉네임을 입력해주세요.",
-                );
+                return const CustomDialogWidget();
               },
             );
             return;
@@ -223,10 +218,7 @@ class _SignPageState extends State<SignPage> {
             await showDialog(
               context: context,
               builder: (context) {
-                return const CustomDialogWidget(
-                  title: "알림",
-                  content: "전화번호 입력을 확인해주세요.",
-                );
+                return const CustomDialogWidget();
               },
             );
             return;
@@ -243,20 +235,14 @@ class _SignPageState extends State<SignPage> {
               await showDialog(
                 context: context,
                 builder: (context) {
-                  return const CustomDialogWidget(
-                    title: "알림",
-                    content: "로그인이 완료되었습니다.",
-                  );
+                  return const CustomDialogWidget();
                 },
               );
             } else {
               await showDialog(
                 context: context,
                 builder: (context) {
-                  return const CustomDialogWidget(
-                    title: "알림",
-                    content: "등록되지 않은 회원입니다.\n자동으로 등록합니다.",
-                  );
+                  return const CustomDialogWidget();
                 },
               );
             }

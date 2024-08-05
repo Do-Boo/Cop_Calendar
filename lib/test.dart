@@ -1,8 +1,4 @@
-import 'package:events_app/function/f_url_href.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,50 +10,55 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Link Text Demo',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Link Text Demo'),
+          title: const Text('Dismissible Example'),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RichText(
-                text: TextSpan(
-                  children: [
-                    const TextSpan(
-                      text: 'Click here to visit ',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    TextSpan(
-                      text: 'https://www.example.com',
-                      style: const TextStyle(color: Colors.blue),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () async {
-                          await launchURL('https://www.example.com');
-                        },
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              Linkify(
-                text: 'Click here to visit https://www.example.com',
-                style: const TextStyle(color: Colors.black),
-                linkStyle: const TextStyle(color: Colors.blue),
-                onOpen: (link) async {
-                  if (await canLaunchUrl(Uri.parse(link.url))) {
-                    await launchUrl(Uri.parse(link.url));
-                  } else {
-                    throw 'Could not launch ${link.url}';
-                  }
-                },
-              ),
-            ],
-          ),
-        ),
+        body: const MyList(),
       ),
+    );
+  }
+}
+
+class MyList extends StatefulWidget {
+  const MyList({super.key});
+
+  @override
+  _MyListState createState() => _MyListState();
+}
+
+class _MyListState extends State<MyList> {
+  final List<String> items = List<String>.generate(10, (i) => 'Item ${i + 1}');
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        return Dismissible(
+          key: Key(items[index]),
+          background: Container(
+            color: Colors.green,
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: const Icon(Icons.edit, color: Colors.white),
+          ),
+          secondaryBackground: Container(color: Colors.red, child: const Icon(Icons.delete, color: Colors.white)),
+          onDismissed: (direction) {
+            setState(() {
+              if (direction == DismissDirection.endToStart) {
+                items.removeAt(index);
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Item deleted')));
+              } else if (direction == DismissDirection.startToEnd) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Edit action')));
+              }
+            });
+          },
+          child: ListTile(
+            title: Text(items[index]),
+          ),
+        );
+      },
     );
   }
 }
