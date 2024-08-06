@@ -1,12 +1,12 @@
-import "dart:convert";
-import "dart:io";
-import "dart:ui" as ui;
+import "package:events_app/api/api_database_query.dart";
 import "package:events_app/widgets/w_button.dart";
+import "package:events_app/widgets/w_custom_dialog.dart";
 import "package:events_app/widgets/w_round_widget.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:get/get.dart";
+import "package:intl/intl.dart";
 
 var theme;
 
@@ -92,12 +92,48 @@ class _SearchPageState extends State<SearchPage> {
                 TextField(
                   controller: _controller,
                   focusNode: _focusNode,
-                  onSubmitted: (text) {
+                  onSubmitted: (text) async {
                     if (text.isEmpty) {
-                      print("object is empty");
                       FocusScope.of(context).requestFocus(_focusNode);
+                      return;
+                    } else if (text == "오늘의 식단") {
+                      showDialog(
+                        context: context,
+                        barrierColor: Colors.black.withOpacity(0.2),
+                        builder: (context) {
+                          return CustomDialogWidget(
+                            child: FutureBuilder(
+                              future: fetchRestaurantJsonData(DateFormat('yyyy-MM-dd').format(DateTime.now()).toString()),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  var items = snapshot.data as List<dynamic>;
+                                  return SingleChildScrollView(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        const Text("점심"),
+                                        Text(items[0]["menu"].toString().split("|")[0]),
+                                        const Text(""),
+                                        const Text("저녁"),
+                                        Text(items[0]["menu"].toString().split("|")[1]),
+                                      ],
+                                    ),
+                                  );
+                                } else {
+                                  return const SizedBox();
+                                }
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      setState(() => isExpanded = false);
+                      _focusNode.unfocus();
+                      Future.delayed(const Duration(milliseconds: 150), () {
+                        Get.back();
+                      });
                     }
-                    print(text);
                   },
                   decoration: InputDecoration(
                     hintText: isExpanded ? "검색어를 입력하세요" : "",

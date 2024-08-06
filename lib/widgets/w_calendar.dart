@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'package:events_app/api/api_database_query.dart';
 import 'package:events_app/g_gets.dart';
 import 'package:events_app/widgets/w_button.dart';
 import 'package:events_app/widgets/w_round_widget.dart';
@@ -54,7 +54,6 @@ class Calendar extends StatelessWidget {
   }
 
   Widget _buildMonthView(PageController pageController, ValueNotifier<DateTime> day) {
-    final rng = Random();
     return PageView.builder(
       controller: pageController,
       onPageChanged: (value) {
@@ -100,16 +99,22 @@ class Calendar extends StatelessWidget {
                                   ),
                                 ),
                                 Expanded(
-                                  child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: List<Widget>.generate(0, (_) {
-                                        return Obx(() {
-                                          Color color = _dayColor(value, index, SelectedDayController.to.selectedDay);
-                                          return rng.nextInt(2) == 0
-                                              ? Icon(Icons.circle, size: 6, color: color)
-                                              : Icon(Icons.circle_outlined, size: 6, color: color);
-                                        });
-                                      }).toList()),
+                                  child: FutureBuilder(
+                                    future: fetchNotificationJsonData(calculatedDay.toString()),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        var items = snapshot.data as List<dynamic>;
+                                        Color color = _dayColor(value, index, SelectedDayController.to.selectedDay);
+                                        if (items.isNotEmpty) {
+                                          return Icon(Icons.circle, size: 6, color: color);
+                                        } else {
+                                          return const SizedBox();
+                                        }
+                                      } else {
+                                        return const SizedBox();
+                                      }
+                                    },
+                                  ),
                                 ),
                               ],
                             ),
