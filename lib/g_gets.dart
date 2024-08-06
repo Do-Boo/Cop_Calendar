@@ -137,7 +137,9 @@ class AuthController extends GetxController {
 
       print("${user.id}, ${user.kakaoAccount!.profile?.nickname ?? "없음"}, ${user.kakaoAccount?.profile?.profileImageUrl ?? "없음"}");
 
-      await insertUserPreferences();
+      String asdf = await insertUserPreferences();
+
+      print(asdf);
 
       _id.value = prefs.getString("id") ?? "";
       _nickName.value = prefs.getString("nickName") ?? "로그인";

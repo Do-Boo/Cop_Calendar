@@ -21,10 +21,12 @@ class MobileScaffold extends StatefulWidget {
 }
 
 class _MobileScaffoldState extends State<MobileScaffold> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _controller1 = TextEditingController();
   final TextEditingController _controller2 = TextEditingController();
   final FocusNode _focusNode1 = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
+  bool _isSnackBarVisible = false;
   RxBool isToggled = false.obs;
 
   void toggleButton() {
@@ -36,51 +38,72 @@ class _MobileScaffoldState extends State<MobileScaffold> {
   Widget build(BuildContext context) {
     theme = Theme.of(context);
 
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      drawer: const Drawer(
-        child: CustomDrawer(),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Stack(
-        children: [
-          Positioned(
-            bottom: 16.0,
-            left: MediaQuery.of(context).size.width - 8 - 72, // 중앙 하단
-            child: SizedBox(
-              height: 54,
-              width: 54,
-              child: Button(
-                color: Theme.of(context).hintColor.withOpacity(0.3),
-                onPressed: () => showCustomModal(context),
-                child: const Icon(Icons.add),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (_scaffoldKey.currentState!.isDrawerOpen) {
+          _scaffoldKey.currentState?.closeDrawer();
+        } else if (_isSnackBarVisible) {
+          SystemNavigator.pop();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("뒤로가기 버튼 한번 더 누르면 꺼집니다.")),
+          );
+
+          setState(() => _isSnackBarVisible = true);
+
+          Future.delayed(const Duration(seconds: 2), () {
+            setState(() => _isSnackBarVisible = false);
+          });
+        }
+      },
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: const CustomAppBar(),
+        drawer: const Drawer(
+          child: CustomDrawer(),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: Stack(
+          children: [
+            Positioned(
+              bottom: 16.0,
+              left: MediaQuery.of(context).size.width - 8 - 72, // 중앙 하단
+              child: SizedBox(
+                height: 54,
+                width: 54,
+                child: Button(
+                  color: Theme.of(context).hintColor.withOpacity(0.3),
+                  onPressed: () => showCustomModal(context),
+                  child: const Icon(Icons.add),
+                ),
               ),
             ),
-          ),
-          Positioned(
-            bottom: 16.0,
-            left: MediaQuery.of(context).size.width / 2 - 36,
-            child: SizedBox(
-              height: 28,
-              width: 72,
-              child: Obx(() {
-                return !SelectedDayController.to.isAtToday
-                    ? Button(
-                        color: Theme.of(context).hintColor.withOpacity(0.3),
-                        onPressed: () {
-                          SelectedDayController.to.selectedDay = DateTime.now();
-                          HapticFeedback.lightImpact();
-                        },
-                        child: const Text("오늘"),
-                      )
-                    : const SizedBox();
-              }),
+            Positioned(
+              bottom: 16.0,
+              left: MediaQuery.of(context).size.width / 2 - 36,
+              child: SizedBox(
+                height: 28,
+                width: 72,
+                child: Obx(() {
+                  return !SelectedDayController.to.isAtToday
+                      ? Button(
+                          color: Theme.of(context).hintColor.withOpacity(0.3),
+                          onPressed: () {
+                            SelectedDayController.to.selectedDay = DateTime.now();
+                            HapticFeedback.lightImpact();
+                          },
+                          child: const Text("오늘"),
+                        )
+                      : const SizedBox();
+                }),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+        resizeToAvoidBottomInset: false,
+        body: const CalenderPage(),
       ),
-      resizeToAvoidBottomInset: false,
-      body: const CalenderPage(),
     );
   }
 

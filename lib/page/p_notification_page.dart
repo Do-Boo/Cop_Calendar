@@ -4,11 +4,10 @@ import "package:events_app/widgets/w_shimmer.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_linkify/flutter_linkify.dart";
+import "package:flutter_slidable/flutter_slidable.dart";
 import "package:get/get.dart";
 import "package:intl/intl.dart";
 import "package:url_launcher/url_launcher.dart";
-
-var theme;
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
@@ -19,7 +18,7 @@ class NotificationPage extends StatefulWidget {
 class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
-    theme = Theme.of(context);
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: PreferredSize(
@@ -73,59 +72,77 @@ class _NotificationPageState extends State<NotificationPage> {
                         shrinkWrap: true,
                         itemCount: items.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Button(
-                            onPressed: () {},
-                            borderRadius: 8,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
-                              height: 56,
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.arrow_right_rounded),
-                                  const SizedBox(width: 8),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            DateFormat('yyyy.MM.dd.(EE)', "ko_KR").format(DateTime.parse(items[index]["created_at"].toString())).toString(),
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: Theme.of(context).hintColor.withOpacity(items[index]["view"] == 0 ? 1 : 0.5),
+                          return Dismissible(
+                            key: Key(items[index]["id"].toString()),
+                            background: Container(
+                              color: Colors.green,
+                              alignment: Alignment.centerLeft,
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: const Icon(Icons.edit, color: Colors.white),
+                            ),
+                            secondaryBackground: Container(
+                              color: Theme.of(context).hintColor.withOpacity(0.2),
+                              alignment: Alignment.centerRight,
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: const Icon(Icons.call_outlined, color: Colors.white),
+                            ),
+                            confirmDismiss: (direction) async {
+                              return null;
+                            },
+                            child: Button(
+                              onPressed: () {},
+                              borderRadius: 8,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+                                height: 56,
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.arrow_right_rounded),
+                                    const SizedBox(width: 8),
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              DateFormat('yyyy.MM.dd.(EE)', "ko_KR").format(DateTime.parse(items[index]["created_at"].toString())).toString(),
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Theme.of(context).hintColor.withOpacity(items[index]["view"] == 0 ? 1 : 0.5),
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(width: 16),
-                                          Text(
-                                            items[index]["title"],
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: Theme.of(context).hintColor.withOpacity(items[index]["view"] == 0 ? 1 : 0.5),
+                                            const SizedBox(width: 16),
+                                            Text(
+                                              items[index]["title"],
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Theme.of(context).hintColor.withOpacity(items[index]["view"] == 0 ? 1 : 0.5),
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      Linkify(
-                                        text: '다운로드 링크: ${items[index]["url"]}',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Theme.of(context).hintColor.withOpacity(items[index]["view"] == 0 ? 1 : 0.5),
+                                          ],
                                         ),
-                                        linkStyle: const TextStyle(color: Colors.blue, fontSize: 16, fontWeight: FontWeight.bold),
-                                        onOpen: (link) async {
-                                          if (await canLaunchUrl(Uri.parse(link.url))) {
-                                            await launchUrl(Uri.parse(link.url));
-                                          } else {
-                                            throw 'Could not launch ${link.url}';
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                        Linkify(
+                                          text: '다운로드 링크: ${items[index]["url"]}',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Theme.of(context).hintColor.withOpacity(items[index]["view"] == 0 ? 1 : 0.5),
+                                          ),
+                                          linkStyle: const TextStyle(color: Colors.blue, fontSize: 16, fontWeight: FontWeight.bold),
+                                          onOpen: (link) async {
+                                            if (await canLaunchUrl(Uri.parse(link.url))) {
+                                              await launchUrl(Uri.parse(link.url));
+                                            } else {
+                                              throw 'Could not launch ${link.url}';
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -180,42 +197,67 @@ class _NotificationPageState extends State<NotificationPage> {
                         shrinkWrap: true,
                         itemCount: items.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Button(
-                            onPressed: () {},
-                            borderRadius: 8,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
-                              height: 56,
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.arrow_right_rounded),
-                                  const SizedBox(width: 8),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
+                          return Slidable(
+                            key: Key(items[index]["id"].toString()),
+                            endActionPane: ActionPane(
+                              motion: const ScrollMotion(),
+                              children: [
+                                SlidableAction(
+                                  onPressed: (context) {},
+                                  backgroundColor: Colors.green,
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.edit,
+                                  label: 'Edit',
+                                ),
+                                SlidableAction(
+                                  onPressed: (context) {},
+                                  backgroundColor: Colors.red,
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.delete,
+                                ),
+                              ],
+                            ),
+                            child: Button(
+                              onPressed: () {},
+                              borderRadius: 8,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+                                height: 56,
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.arrow_right_rounded),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                items[index]["title"],
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Theme.of(context).hintColor.withOpacity(items[index]["view"] == 0 ? 1 : 0.5),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                           Text(
-                                            items[index]["title"],
+                                            items[index]["description"],
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize: 16,
-                                              fontWeight: FontWeight.bold,
                                               color: Theme.of(context).hintColor.withOpacity(items[index]["view"] == 0 ? 1 : 0.5),
                                             ),
                                           ),
                                         ],
                                       ),
-                                      Text(
-                                        items[index]["description"],
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Theme.of(context).hintColor.withOpacity(items[index]["view"] == 0 ? 1 : 0.5),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );

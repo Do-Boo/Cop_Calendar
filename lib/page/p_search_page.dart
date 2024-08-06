@@ -96,7 +96,7 @@ class _SearchPageState extends State<SearchPage> {
                     if (text.isEmpty) {
                       FocusScope.of(context).requestFocus(_focusNode);
                       return;
-                    } else if (text == "오늘의 식단") {
+                    } else if (text.replaceAll(" ", "") == "오늘의식단") {
                       showDialog(
                         context: context,
                         barrierColor: Colors.black.withOpacity(0.2),

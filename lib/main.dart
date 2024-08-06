@@ -25,6 +25,8 @@ void main() async {
     javaScriptAppKey: kakaoJavaScriptAppKey,
   );
 
+  print(await KakaoSdk.origin);
+
   runApp(MyApp(isDarkTheme));
 }
 
