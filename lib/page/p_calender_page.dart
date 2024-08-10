@@ -130,12 +130,10 @@ class _CalenderPageState extends State<CalenderPage> {
     return Obx(() {
       SelectedDayController.to.selectedDay;
       return FutureBuilder(
-        future: Future.delayed(const Duration(milliseconds: 300), () => fetchReportTableJsonData()),
+        future: fetchReportTableJsonData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting || snapshot.connectionState == ConnectionState.active) {
             return _BuildLodingWidget();
-          } else if (snapshot.hasError) {
-            return const SizedBox();
           } else if (snapshot.hasData) {
             var items = snapshot.data as List<dynamic>;
             return Expanded(

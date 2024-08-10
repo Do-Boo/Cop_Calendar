@@ -8,8 +8,6 @@ import "package:flutter/services.dart";
 import "package:get/get.dart";
 import "package:intl/intl.dart";
 
-var theme;
-
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
   @override
@@ -34,11 +32,9 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    theme = Theme.of(context);
-
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(56), // 원하는 높이로 설정
+        preferredSize: const Size.fromHeight(56),
         child: SafeArea(child: _buildAppBar(context)),
       ),
       body: const SafeArea(child: SizedBox()),
@@ -93,6 +89,7 @@ class _SearchPageState extends State<SearchPage> {
                   controller: _controller,
                   focusNode: _focusNode,
                   onSubmitted: (text) async {
+                    await insertSearchLogger(text);
                     if (text.isEmpty) {
                       FocusScope.of(context).requestFocus(_focusNode);
                       return;
@@ -128,11 +125,8 @@ class _SearchPageState extends State<SearchPage> {
                         },
                       );
                     } else {
-                      setState(() => isExpanded = false);
-                      _focusNode.unfocus();
-                      Future.delayed(const Duration(milliseconds: 150), () {
-                        Get.back();
-                      });
+                      FocusScope.of(context).requestFocus(_focusNode);
+                      return;
                     }
                   },
                   decoration: InputDecoration(

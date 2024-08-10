@@ -197,26 +197,23 @@ class _NotificationPageState extends State<NotificationPage> {
                         shrinkWrap: true,
                         itemCount: items.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Slidable(
+                          return Dismissible(
                             key: Key(items[index]["id"].toString()),
-                            endActionPane: ActionPane(
-                              motion: const ScrollMotion(),
-                              children: [
-                                SlidableAction(
-                                  onPressed: (context) {},
-                                  backgroundColor: Colors.green,
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.edit,
-                                  label: 'Edit',
-                                ),
-                                SlidableAction(
-                                  onPressed: (context) {},
-                                  backgroundColor: Colors.red,
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.delete,
-                                ),
-                              ],
+                            background: Container(
+                              color: Colors.green,
+                              alignment: Alignment.centerLeft,
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: const Icon(Icons.edit, color: Colors.white),
                             ),
+                            secondaryBackground: Container(
+                              color: Colors.red,
+                              alignment: Alignment.centerRight,
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: const Icon(Icons.delete, color: Colors.white),
+                            ),
+                            confirmDismiss: (direction) async {
+                              return null;
+                            },
                             child: Button(
                               onPressed: () {},
                               borderRadius: 8,
